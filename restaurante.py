@@ -39,26 +39,30 @@ def elegir_opcion_menu():
     opcion = input("Seleccione la opción (1 o 2): ")
     return opcion
 
+opcion_menu= elegir_opcion_menu()
+    
+     
 
-def mostrar_detalles_del_menu(menu_seleccionado, nombre_usuario):
-    print(f"\nDetalles del Menú de {nombre_usuario}:")
-    mostrar_menu(menu_seleccionado)
-    print(f"\nPrecio Total: ${menu_seleccionado.obtener_precio():.2f}")
+if opcion_menu == "1":
+            
+            def mostrar_detalles_del_menu(menu_seleccionado, nombre_usuario):
+                print(f"\nDetalles del Menú de {nombre_usuario}:")
+                mostrar_menu(menu_seleccionado)
+                print(f"\nPrecio Total: ${menu_seleccionado.obtener_precio():.2f}")
 
-if __name__ == "__main__":
-    registrar_nuevo_usuario()  # Registra un nuevo usuario
+            if __name__ == "__main__":
+                registrar_nuevo_usuario()  # Registra un nuevo usuario
 
-    nombre_usuario = input("Nombre de usuario: ")
-    contraseña = input("Contraseña: ")
+                nombre_usuario = input("Nombre de usuario: ")
+                contraseña = input("Contraseña: ")
 
-    if autenticar_usuario(nombre_usuario, contraseña):
-        # Crear un menú compuesto para gestionar la elección entre pizza personalizada y menú predefinido
-        menu_pedido = MenuComposite("Pedido")
+                if autenticar_usuario(nombre_usuario, contraseña):
+                    # Crear un menú compuesto para gestionar la elección entre pizza personalizada y menú predefinido
+                    menu_pedido = MenuComposite("Pedido")
 
-        opcion_menu = elegir_opcion_menu()
-
-        if opcion_menu == "1":  # Pizza personalizada
-            # Crear un menú compuesto para gestionar la pizza personalizada
+        
+            
+            
             pizza_personalizada = MenuComposite("Pizza Personalizada")
 
             masa_builder = MasaPizzaBuilder()
@@ -119,7 +123,7 @@ if __name__ == "__main__":
                                     ])
                                 print("Detalles de la pizza personalizada guardados en pizzas.csv")
 
-        elif opcion_menu == "2":
+elif opcion_menu == "2":
             
             
             
