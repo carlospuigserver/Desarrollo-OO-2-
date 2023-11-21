@@ -13,25 +13,118 @@ import os
 
 
 
-def ejecutar_pedido():
-   
-  print("Excelente elección!!!")
-  print("¿Qué menú desea ver?")
-  print("1. Menú Normal")
-  print("2. Menú Niños")
-  print("3. Menú Halloween")
-  print("4. Menú San Valentín")
-  print("5. Menú Combo Pareja")
- 
-  opcion = int(input("Ingrese el número del menú que desea tomar: "))
+from abc import ABC, abstractmethod
 
-  if opcion == 1:
-   if __name__ == "__main__":
-    # Crear el menú normal
-    menu_normal = MenuSimple("Menú Simple")
+class ComponenteMenu(ABC):
+    @abstractmethod
+    def obtener_precio(self):
+        pass
 
-    # Agregar opciones al menú normal
-    # Agregar opciones al menú normal
+    @abstractmethod
+    def obtener_presentacion(self):
+        pass
+
+class MenuSimple(ComponenteMenu):
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.opciones = []
+
+    def agregar_opcion(self, *opciones):
+        self.opciones.extend(opciones)
+
+    def obtener_precio(self):
+        return sum(opcion.obtener_precio() for opcion in self.opciones)
+
+    def obtener_presentacion(self):
+        presentacion = f"{self.nombre}:\n"
+        presentacion += "\n".join([f"  - {opcion.obtener_presentacion()}" for opcion in self.opciones])
+        return presentacion
+
+class Componente(ComponenteMenu):
+    def __init__(self, nombre, precio):
+        self.nombre = nombre
+        self.precio = precio
+
+    def obtener_precio(self):
+        return self.precio
+
+    def obtener_presentacion(self):
+        return f"{self.nombre} - ${self.precio:.2f}"
+
+class MenuComboPareja(ComponenteMenu):
+    def __init__(self, nombre, *menus):
+        self.nombre = nombre
+        self.menus = list(menus)
+
+    def agregar(self, *menus):
+        self.menus.extend(menus)  # Cambiado de self.opciones a self.menus
+
+    def obtener_precio(self):
+        return sum(menu.obtener_precio() for menu in self.menus)
+
+    def obtener_presentacion(self):
+        presentacion = f"{self.nombre}:\n"
+        presentacion += "\n".join([f"  - {menu.obtener_presentacion()}" for menu in self.menus])
+        return presentacion
+
+class MenuNiños(ComponenteMenu):
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.opciones_ninos = []
+
+    def agregar(self, *opciones_ninos):
+        self.opciones_ninos.extend(opciones_ninos)
+
+    def obtener_precio(self):
+        return sum(opcion.obtener_precio() for opcion in self.opciones_ninos)
+
+    def obtener_presentacion(self):
+        presentacion = f"{self.nombre} Niños:\n"
+        presentacion += "\n".join([f"  - {opcion.obtener_presentacion()}" for opcion in self.opciones_ninos])
+        return presentacion
+
+class MenuHalloween(ComponenteMenu):
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.opciones_halloween = []
+
+    def agregar(self, *opciones_halloween):
+        self.opciones_halloween.extend(opciones_halloween)
+
+    def obtener_precio(self):
+        return sum(opcion.obtener_precio() for opcion in self.opciones_halloween)
+
+    def obtener_presentacion(self):
+        presentacion = f"{self.nombre} Halloween:\n"
+        presentacion += "\n".join([f"  - {opcion.obtener_presentacion()}" for opcion in self.opciones_halloween])
+        return presentacion
+
+class MenuSanValentin(ComponenteMenu):
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.opciones_san_valentin = []
+
+    def agregar(self, *opciones_san_valentin):
+        self.opciones_san_valentin.extend(opciones_san_valentin)
+
+    def obtener_precio(self):
+        return sum(opcion.obtener_precio() for opcion in self.opciones_san_valentin)
+
+    def obtener_presentacion(self):
+        presentacion = f"{self.nombre} San Valentín:\n"
+        presentacion += "\n".join([f"  - {opcion.obtener_presentacion()}" for opcion in self.opciones_san_valentin])
+        return presentacion
+
+
+def mostrar_opciones(opciones, tipo):
+    print(f"Seleccione {tipo} (Ingrese el número):")
+    for i, opcion in enumerate(opciones, 1):
+        print(f"{i}. {opcion.obtener_presentacion()}")
+
+    seleccion = int(input("Ingrese el número de su elección: "))
+    return opciones[seleccion - 1]
+
+def opciones_menu_normal():
     bebidas_n = [
         Componente("Nestea", 2.0),
         Componente("Fanta (Naranja)", 2.5),
@@ -52,7 +145,7 @@ def ejecutar_pedido():
     ]
 
     segundos_platos_n = [
-        Componente("Pizza Delizioso (Pizza personalizada con el Builder)", 12.0),
+        Componente("Pizza Delizioso ", 12.0),
         Componente("Pizza Margherita", 10.0),
         Componente("Pizza Pepperoni", 11.0),
         Componente("Pizza Vegetariana", 11.5)
@@ -72,28 +165,10 @@ def ejecutar_pedido():
     segundo_plato_cliente = mostrar_opciones(segundos_platos_n, "Segundo Plato")
     postre_cliente = mostrar_opciones(postres_n, "Postre")
 
-    # Crear el pedido del cliente
-    pedido_cliente = MenuSimple("Menú Cliente")
-    pedido_cliente.agregar_opcion(bebida_cliente, primer_plato_cliente, segundo_plato_cliente, postre_cliente)
+    return bebida_cliente, primer_plato_cliente, segundo_plato_cliente, postre_cliente
 
-    # Mostrar el resumen del pedido del cliente y el precio total
-    print("\nResumen del Pedido:")
-    mostrar_menu(pedido_cliente)
-    print(f"\nPrecio Total: ${pedido_cliente.precio():.2f}")
 
-    # Obtener y mostrar la presentación del menú
-    print("\nPresentación del Menú:")
-    print(menu_normal.obtener_presentacion())
-    
-
-    
-    
-  elif opcion == 2:
-   if __name__ == "__main__":
-    # Crear el menú de niños
-    menu_ninos = MenuNiños("Menú Niños")
-
-    # Agregar opciones al menú de niños
+def opciones_menu_ninos():
     bebidas_ninos = [
         Componente("Zumo de Fresa", 2.0),
         Componente("Zumo de Manzana", 2.0),
@@ -110,7 +185,7 @@ def ejecutar_pedido():
     ]
 
     segundos_platos_ninos = [
-        Componente("Mini Pizza Delizioso (Pizza personalizada con el Builder)", 8.0),
+        Componente("Mini Pizza Delizioso ", 8.0),
         Componente("Mini Pizza Margherita", 7.0),
         Componente("Mini Pizza Hawaiana", 7.5),
         Componente("Mini Pizza Vegetariana", 8.0)
@@ -129,25 +204,9 @@ def ejecutar_pedido():
     segundo_plato_cliente_ninos = mostrar_opciones(segundos_platos_ninos, "Segundo Plato")
     postre_cliente_ninos = mostrar_opciones(postres_ninos, "Postre")
 
-    # Crear el pedido del cliente para niños
-    pedido_cliente_ninos = MenuNiños("Menú Cliente Niños")
-    pedido_cliente_ninos.agregar(bebida_cliente_ninos, primer_plato_cliente_ninos, segundo_plato_cliente_ninos, postre_cliente_ninos)
+    return bebida_cliente_ninos, primer_plato_cliente_ninos, segundo_plato_cliente_ninos, postre_cliente_ninos
 
-    # Mostrar el resumen del pedido del cliente y el precio total para niños
-    print("\nResumen del Pedido para Niños:")
-    mostrar_menu(pedido_cliente_ninos)
-    print(f"\nPrecio Total: ${pedido_cliente_ninos.precio():.2f}")
-
-    # Obtener y mostrar la presentación del menú para niños
-    print("\nPresentación del Menú para Niños:")
-    print(menu_ninos.obtener_presentacion())
-
-
-  elif opcion == 3:
-    if __name__ == "__main__":
-     menu_halloween = MenuHalloween("Menú Halloween")
-
-    # Agregar opciones al menú Halloween
+def opciones_menu_halloween():
     bebidas_halloween = [
         Componente("Poción de Bruja (Bebida de Frutas)", 3.0),
         Componente("Sangre de Vampiro (Zumo de Tomate)", 2.5),
@@ -182,80 +241,10 @@ def ejecutar_pedido():
     principal_cliente_halloween = mostrar_opciones(segundos_platos_halloween, "Segundo Plato")
     postre_cliente_halloween = mostrar_opciones(postres_halloween, "Postre")
 
-    # Crear el pedido del cliente para Halloween
-    pedido_cliente_halloween = MenuHalloween("Menú Halloween")
-    pedido_cliente_halloween.agregar(bebida_cliente_halloween, entrante_cliente_halloween, principal_cliente_halloween, postre_cliente_halloween)
-
-    # Mostrar el resumen del pedido del cliente y el precio total para Halloween
-    print("\nResumen del Pedido para Halloween:")
-    mostrar_menu(pedido_cliente_halloween)
-    print(f"\nPrecio Total: ${pedido_cliente_halloween.precio():.2f}")
-
-    # Obtener y mostrar la presentación del menú para Halloween
-    print("\nPresentación del Menú para Halloween:")
-    print(menu_halloween.obtener_presentacion())
-
- 
-  elif opcion == 4:
-   if __name__ == "__main__":
-    # Crear el menú Halloween
-    menu_halloween = MenuHalloween("Menú Halloween")
-
-    # Agregar opciones al menú Halloween
-    bebidas_halloween = [
-        Componente("Poción de Bruja (Bebida de Frutas)", 3.0),
-        Componente("Sangre de Vampiro (Zumo de Tomate)", 2.5),
-        Componente("Limo Verde (Refresco de Lima)", 2.5),
-        Componente("Agua Embrujada (Agua Mineral)", 1.5),
-    ]
-
-    primeros_platos_halloween = [
-        Componente("Dedos de Zombie (Palitos de Queso)", 5.0),
-        Componente("Ojos de Murciélago (Aceitunas rellenas)", 4.0),
-        Componente("Calabaza Rellena de Quinoa", 7.0),
-        Componente("Cerebros a la Parrilla (Empanadas de Carne)", 6.5),
-    ]
-
-    segundos_platos_halloween = [
-        Componente("Pizza Espectral (Pizza de Queso)", 10.0),
-        Componente("Pasta de la Noche (Pasta con Salsa de Calabaza)", 9.0),
-        Componente("Estofado de Calabaza y Setas", 11.0),
-        Componente("Hamburguesa Monstruosa (Hamburguesa de Ternera)", 12.0),
-    ]
-
-    postres_halloween = [
-        Componente("Ojos Saltarines (Gelatina de Uva)", 4.0),
-        Componente("Fantasmas de Chocolate (Brownies)", 5.0),
-        Componente("Cupcakes de Araña", 4.5),
-        Componente("Cementerio de Helado (Helado de Vainilla con Galletas)", 7.0),
-    ]
-
-    # Solicitar al cliente que elija opciones para Halloween
-    bebida_cliente_halloween = mostrar_opciones(bebidas_halloween, "Bebida")
-    entrante_cliente_halloween = mostrar_opciones(primeros_platos_halloween, "Primer Plato")
-    principal_cliente_halloween = mostrar_opciones(segundos_platos_halloween, "Segundo Plato")
-    postre_cliente_halloween = mostrar_opciones(postres_halloween, "Postre")
-
-    # Crear el pedido del cliente para Halloween
-    pedido_cliente_halloween = MenuHalloween("Menú Halloween")
-    pedido_cliente_halloween.agregar(bebida_cliente_halloween, entrante_cliente_halloween, principal_cliente_halloween, postre_cliente_halloween)
-
-    # Mostrar el resumen del pedido del cliente y el precio total para Halloween
-    print("\nResumen del Pedido para Halloween:")
-    mostrar_menu(pedido_cliente_halloween)
-    print(f"\nPrecio Total: ${pedido_cliente_halloween.precio():.2f}")
-
-    # Obtener y mostrar la presentación del menú para Halloween
-    print("\nPresentación del Menú para Halloween:")
-    print(menu_halloween.obtener_presentacion())
+    return bebida_cliente_halloween, entrante_cliente_halloween, principal_cliente_halloween, postre_cliente_halloween
 
 
-  elif opcion == 5:
-   if __name__ == "__main__":
-    # Crear el menú San Valentín
-    menu_san_valentin = MenuSanValentin("Menú San Valentín")
-
-    # Agregar opciones al menú San Valentín
+def opciones_menu_san_valentin():
     bebidas_san_valentin = [
         Componente("Botella de Vino Tinto", 15.0),
         Componente("Botella de Vino Blanco", 15.0),
@@ -297,18 +286,104 @@ def ejecutar_pedido():
     segundo_platos_valentin0 = mostrar_opciones(segundo_platos_valentin, "Segundo Plato")
     postre_cliente_san_valentin = mostrar_opciones(postres_san_valentin, "Postre")
 
-    # Crear el pedido del cliente para San Valentín
-    pedido_cliente_san_valentin = MenuSanValentin("Menú San Valentín")
-    pedido_cliente_san_valentin.agregar(aperitivo_cliente_san_valentin, principal_cliente_san_valentin, postre_cliente_san_valentin)
+    return aperitivo_cliente_san_valentin, principal_cliente_san_valentin, segundo_platos_valentin0, postre_cliente_san_valentin
 
-    # Mostrar el resumen del pedido del cliente y el precio total para San Valentín
-    print("\nResumen del Pedido para San Valentín:")
-    mostrar_menu(pedido_cliente_san_valentin)
-    print(f"\nPrecio Total: ${pedido_cliente_san_valentin.precio():.2f}")
 
-    # Obtener y mostrar la presentación del menú para San Valentín
-    print("\nPresentación del Menú para San Valentín:")
-    print(menu_san_valentin.obtener_presentacion())
+def opciones_menu_combo_pareja():
+    bebidas_pareja = [
+        Componente("Botella de Vino Tinto", 15.0),
+        Componente("Botella de Vino Blanco", 15.0),
+        Componente("Botea de Vino Rosado", 15.0),
+        Componente("Agua con Gas de Litro", 3.0),
+        Componente("Refresco de Naranja", 2.5),
+        Componente("Agua Mineral de Litro", 2.5),
+    ]
 
-ejecutar_pedido()
+    primeros_platos_pareja = [
+        Componente("Ensalada Mixta para compartir ", 15.0),
+        Componente("Carpaccio de Salmón para compartir ", 12.0),
+        Componente("Tartaleta de Queso de Cabra", 12.0),
+        Componente("Croquetas de Jamón", 12.0),
+    ]
 
+    segundos_platos_pareja = [
+        Componente("Pizza Combo Pareja ", 24.0),
+        Componente("Pizza Quattro Stagioni para compartir", 20.0),
+        Componente("Pasta Carbonara para compartir", 20.0),
+        Componente("Risotto de Champiñones para compartir", 18.0),
+    ]
+
+    postres_pareja = [
+        Componente("Dos Tiramisú de chocolate y Café", 8.0),
+        Componente("Dos Fondue de Chocolate", 10.0),
+        Componente("Dos Helados de Vainilla con Frutas", 6.0),
+        Componente("Dos Pasteles de Chocolate y Frambuesa", 9.0),
+    ]
+
+    # Solicitar al cliente que elija opciones para Combo Pareja
+    
+    bebida_cliente_pareja = mostrar_opciones(bebidas_pareja, "Bebida")
+    primerplato_cliente_pareja = mostrar_opciones(primeros_platos_pareja, "Primer Plato")
+    segundoplato_cliente_pareja = mostrar_opciones(segundos_platos_pareja, "Segundo Plato")
+    postre_cliente_pareja = mostrar_opciones(postres_pareja, "Postre")
+
+    return bebida_cliente_pareja, primerplato_cliente_pareja, segundoplato_cliente_pareja, postre_cliente_pareja
+
+def ejecutar_pedido():
+    menus = [
+        MenuSimple("Menú Simple"),
+        MenuNiños("Menú Niños"),
+        MenuHalloween("Menú Halloween"),
+        MenuSanValentin("Menú San Valentín"),
+        MenuComboPareja("Menú Combo Pareja")
+    ]
+
+    
+    print("Excelente elección!!!")
+    print("¿Qué menú desea ver?")
+    for i, menu in enumerate(menus, 1):
+        if hasattr(menu, 'nombre'):
+            print(f"{i}. {menu.nombre}")
+        else:
+            print(f"{i}. Menú Desconocido")
+
+    opcion = int(input("Ingrese el número del menú que desea tomar: "))
+    menu_seleccionado = menus[opcion - 1]
+
+    print(f"\nHa seleccionado: {menu_seleccionado.nombre if hasattr(menu_seleccionado, 'nombre') else 'Menú Desconocido'}")
+
+    
+
+    # Agregar opciones al menú seleccionado
+    if isinstance(menu_seleccionado, MenuSimple):
+        bebidas_n, primeros_platos_n, segundos_platos_n,postres_n = opciones_menu_normal()
+        menu_seleccionado.agregar_opcion(bebidas_n, primeros_platos_n, segundos_platos_n, postres_n)
+    
+    elif isinstance(menu_seleccionado, MenuNiños):
+        bebidas_ninos, primeros_platos_ninos, segundos_platos_ninos, postres_ninos = opciones_menu_ninos()
+        menu_seleccionado.agregar(bebidas_ninos, primeros_platos_ninos, segundos_platos_ninos, postres_ninos)
+    
+    elif isinstance(menu_seleccionado, MenuHalloween):
+        bebidas_halloween, primeros_platos_halloween, segundos_platos_halloween, postres_halloween = opciones_menu_halloween()
+        menu_seleccionado.agregar(bebidas_halloween, primeros_platos_halloween, segundos_platos_halloween, postres_halloween)
+
+    elif isinstance(menu_seleccionado, MenuSanValentin):
+        bebidas_san_valentin, primeros_platos_valentin, segundos_platos_valentin, postres_san_valentin = opciones_menu_san_valentin()
+        menu_seleccionado.agregar(bebidas_san_valentin, primeros_platos_valentin, segundos_platos_valentin, postres_san_valentin)
+
+    elif isinstance(menu_seleccionado, MenuComboPareja):
+        bebidas_pareja, primeros_platos_pareja, segundos_platos_pareja, postres_pareja = opciones_menu_combo_pareja()
+        menu_seleccionado.agregar(bebidas_pareja, primeros_platos_pareja, segundos_platos_pareja, postres_pareja)
+    
+    
+    
+    print("\nResumen del Pedido:")
+    mostrar_menu(menu_seleccionado)
+    print(f"\nPrecio Total: ${menu_seleccionado.obtener_precio():.2f}")
+
+    # Obtener y mostrar la presentación del menú
+    print("\nPresentación del Menú:")
+    print(menu_seleccionado.obtener_presentacion())
+
+if __name__ == "__main__":
+    ejecutar_pedido()
