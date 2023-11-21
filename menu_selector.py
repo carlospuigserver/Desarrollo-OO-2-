@@ -386,8 +386,41 @@ def ejecutar_pedido():
     print("\nPresentación del Menú:")
     print(menu_seleccionado.obtener_presentacion())
 
+    def escribir_menu_a_csv(menu_seleccionado):
+        nombre_archivo = f"csv/{menu_seleccionado.nombre.lower().replace(' ', '_')}_storage/menus.csv"
 
+        with open(nombre_archivo, 'storage/menus.csv', newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(["Tipo", "Bebida", "Primer Plato", "Segundo Plato", "Postre", "Precio Total"])
 
+            if isinstance(menu_seleccionado, MenuSimple):
+                bebidas_n, primeros_platos_n, segundos_platos_n, postres_n = menu_seleccionado.opciones
+                precio_total = menu_seleccionado.obtener_precio()
+                writer.writerow([menu_seleccionado.nombre, bebidas_n.nombre, primeros_platos_n.nombre, segundos_platos_n.nombre, postres_n.nombre, precio_total])
+
+            elif isinstance(menu_seleccionado, MenuNiños):
+                bebidas_ninos, primeros_platos_ninos, segundos_platos_ninos, postres_ninos = menu_seleccionado.opciones_ninos
+                precio_total_nino = menu_seleccionado.obtener_precio()
+                writer.writerow([menu_seleccionado.nombre, bebidas_ninos.nombre, primeros_platos_ninos.nombre, segundos_platos_ninos.nombre, postres_ninos.nombre, precio_total_nino])
+
+            elif isinstance(menu_seleccionado, MenuHalloween):
+                bebidas_halloween, primeros_platos_halloween, segundos_platos_halloween, postres_halloween = menu_seleccionado.opciones_halloween
+                precio_total_halloween = menu_seleccionado.obtener_precio()
+                writer.writerow([menu_seleccionado.nombre, bebidas_halloween.nombre, primeros_platos_halloween.nombre, segundos_platos_halloween.nombre, postres_halloween.nombre, precio_total_halloween])
+
+            elif isinstance(menu_seleccionado, MenuSanValentin):
+                bebidas_san_valentin, primeros_platos_valentin_valentin, segundo_platos_valentin, postres_san_valentin = menu_seleccionado.opciones_san_valentin
+                precio_total_valentin = menu_seleccionado.obtener_precio()
+                writer.writerow([menu_seleccionado.nombre, bebidas_san_valentin.nombre, primeros_platos_valentin_valentin.nombre, segundo_platos_valentin.nombre, postres_san_valentin.nombre, precio_total_valentin])
+
+            elif isinstance(menu_seleccionado, MenuComboPareja):
+                bebidas_pareja, primeros_platos_pareja, segundos_platos_pareja, postres_pareja = menu_seleccionado.opciones_pareja
+                precio_total_pareja = menu_seleccionado.obtener_precio()
+                writer.writerow([menu_seleccionado.nombre, bebidas_pareja.nombre, primeros_platos_pareja.nombre, segundos_platos_pareja.nombre, postres_pareja.nombre, precio_total_pareja])
+
+        print(f"Detalles del menú guardados en {nombre_archivo}")
+        
+        escribir_menu_a_csv(menu_seleccionado)
 
 
 if __name__ == "__main__":
