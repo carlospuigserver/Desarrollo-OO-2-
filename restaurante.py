@@ -119,11 +119,10 @@ if __name__ == "__main__":
             
             class Restaurante:
                 def restaurante(self):
-                    menu_predefinido = MenuComposite("Menu Predefinido")
+                    
                     print("Excelente elección, a continuación se le mostrarán los menús disponibles")
                     ejecutar_pedido()
-                    menu_pedido.add(menu_predefinido)
-
+                    
                     
 
 
