@@ -12,7 +12,6 @@ import os
 
 
 
-
 from abc import ABC, abstractmethod
 
 class ComponenteMenu(ABC):
@@ -339,7 +338,7 @@ def ejecutar_pedido():
     ]
 
     
-    print("Excelente elección!!!")
+    
     print("¿Qué menú desea ver?")
     for i, menu in enumerate(menus, 1):
         if hasattr(menu, 'nombre'):
@@ -384,6 +383,9 @@ def ejecutar_pedido():
     # Obtener y mostrar la presentación del menú
     print("\nPresentación del Menú:")
     print(menu_seleccionado.obtener_presentacion())
+
+    
+
 
 if __name__ == "__main__":
     ejecutar_pedido()
