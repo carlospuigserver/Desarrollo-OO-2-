@@ -40,7 +40,10 @@ def elegir_opcion_menu():
     return opcion
 
 
-
+def mostrar_detalles_del_menu(menu_seleccionado, nombre_usuario):
+    print(f"\nDetalles del Menú de {nombre_usuario}:")
+    mostrar_menu(menu_seleccionado)
+    print(f"\nPrecio Total: ${menu_seleccionado.obtener_precio():.2f}")
 
 if __name__ == "__main__":
     registrar_nuevo_usuario()  # Registra un nuevo usuario
@@ -125,7 +128,13 @@ if __name__ == "__main__":
                 def restaurante(self):
                     
                     print("Excelente elección, a continuación se le mostrarán los menús disponibles")
-                    ejecutar_pedido()
+                    if __name__ == "__main__":
+                        registrar_nuevo_usuario()  # Registra un nuevo usuario
+                        nombre_usuario = input("Nombre de usuario: ")
+                        contraseña = input("Contraseña: ")
+
+                        if autenticar_usuario(nombre_usuario, contraseña):
+                            ejecutar_pedido()
                     
                     
 
