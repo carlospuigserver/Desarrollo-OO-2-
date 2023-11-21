@@ -39,6 +39,9 @@ def elegir_opcion_menu():
     opcion = input("Seleccione la opción (1 o 2): ")
     return opcion
 
+
+
+
 if __name__ == "__main__":
     registrar_nuevo_usuario()  # Registra un nuevo usuario
 
@@ -114,6 +117,7 @@ if __name__ == "__main__":
                                 print("Detalles de la pizza personalizada guardados en pizzas.csv")
 
         elif opcion_menu == "2":
+            
             
             
             
