@@ -123,6 +123,8 @@ def mostrar_opciones(opciones, tipo):
     seleccion = int(input("Ingrese el número de su elección: "))
     return opciones[seleccion - 1]
 
+
+
 def opciones_menu_normal():
     bebidas_n = [
         Componente("Nestea", 2.0),
@@ -384,7 +386,8 @@ def ejecutar_pedido():
     print("\nPresentación del Menú:")
     print(menu_seleccionado.obtener_presentacion())
 
-    
+
+
 
 
 if __name__ == "__main__":

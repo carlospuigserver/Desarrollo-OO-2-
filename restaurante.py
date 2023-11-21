@@ -114,12 +114,32 @@ if __name__ == "__main__":
                                 print("Detalles de la pizza personalizada guardados en pizzas.csv")
 
         elif opcion_menu == "2":
+            
+            
+            
             class Restaurante:
                 def restaurante(self):
-                    
+                    menu_predefinido = MenuComposite("Menu Predefinido")
                     print("Excelente elección, a continuación se le mostrarán los menús disponibles")
                     ejecutar_pedido()
+                    menu_pedido.add(menu_predefinido)
 
+                    
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             if __name__ == "__main__":
                 restaurante = Restaurante()
                 restaurante.restaurante()
+
+
+            
