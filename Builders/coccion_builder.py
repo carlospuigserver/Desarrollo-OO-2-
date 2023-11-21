@@ -44,6 +44,7 @@ class CoccionPizzaBuilder(BuilderCoccionPizza):
 
     def construir_horno_lena(self):
         self.coccion.metodo = "Horno de leña"
+        
 
     def construir_horno_electrico(self):
         self.coccion.metodo = "Horno eléctrico"
