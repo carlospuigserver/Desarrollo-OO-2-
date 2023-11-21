@@ -128,21 +128,16 @@ elif opcion_menu == "2":
             
             
             
-            class Restaurante:
-                def restaurante(self):
-                    
-                    print("Excelente elección, a continuación se le mostrarán los menús disponibles")
-                    if __name__ == "__main__":
-                        registrar_nuevo_usuario()  # Registra un nuevo usuario
-                        nombre_usuario = input("Nombre de usuario: ")
-                        contraseña = input("Contraseña: ")
+            
+                if __name__ == "__main__":
+                    registrar_nuevo_usuario()  # Registra un nuevo usuario
+                    nombre_usuario = input("Nombre de usuario: ")
+                    contraseña = input("Contraseña: ")
 
-                        if autenticar_usuario(nombre_usuario, contraseña):
-                            ejecutar_pedido()
-                    
-                    
+                    if autenticar_usuario(nombre_usuario, contraseña):
+                        ejecutar_pedido()
 
-
+                         
             
             
             
@@ -153,9 +148,6 @@ elif opcion_menu == "2":
             
             
             
-            if __name__ == "__main__":
-                restaurante = Restaurante()
-                restaurante.restaurante()
 
 
             
