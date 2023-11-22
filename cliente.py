@@ -336,22 +336,42 @@ class Cliente:
             "Tarta de Limón",
             "Profiteroles"
         ]
-        print("Elija el tipo de postre escribiendo el número correspondiente:")
-        for i, tipo in enumerate(tipos_postres, start=1):
-            print(f"{i}. {tipo}")
+        print("Elija el tipo de postre escribiendo su nombre:")
+        for tipo in tipos_postres:
+            print(f"- {tipo}")
 
-        opcion = input("Su elección (número): ")
-        try:
-            opcion = int(opcion)
-            if 1 <= opcion <= len(tipos_postres):
-                tipo_elegido = tipos_postres[opcion - 1]
-                # Construir el postre elegido
-                getattr(builder, f"construir_{tipo_elegido.lower().replace(' ', '_')}")()
-                print(f"Postre elegido: {tipo_elegido}")
-            else:
-                print("Número fuera de rango.")
-        except ValueError:
-            print("Por favor, ingrese un número válido.")
+        tipo_elegido = input("Su elección: ").capitalize()
+        tipo_elegido_lower = tipo_elegido.lower()
+        if tipo_elegido_lower == "mochi ice cream":
+            builder.construir_mochi_ice_cream()
+        elif tipo_elegido_lower == "baklava":
+            builder.construir_baklava()
+        elif tipo_elegido_lower == "dulce de tres leches con coco":
+            builder.construir_dulce_tres_leches_coco()
+        elif tipo_elegido_lower == "sorvete de açaí":
+            builder.construir_sorvete_acai()
+        elif tipo_elegido_lower == "anmitsu":
+            builder.construir_anmitsu()
+        elif tipo_elegido_lower == "kulfi":
+            builder.construir_kulfi()
+        elif tipo_elegido_lower == "knafeh":
+            builder.construir_knafeh()
+        elif tipo_elegido_lower == "tiramisú":
+            builder.construir_tiramisu()
+        elif tipo_elegido_lower == "panna cotta":
+            builder.construir_panna_cotta()
+        elif tipo_elegido_lower == "pastel de chocolate":
+            builder.construir_pastel_chocolate()
+        elif tipo_elegido_lower == "cheesecake":
+            builder.construir_cheesecake()
+        elif tipo_elegido_lower == "mousse de frambuesa":
+            builder.construir_mousse_frambuesa()
+        elif tipo_elegido_lower == "tarta de limón":
+            builder.construir_tarta_limon()
+        elif tipo_elegido_lower == "profiteroles":
+            builder.construir_profiteroles()
+        else:
+            print("No se ha encontrado el tipo de postre elegido.")
 
 if __name__ == "__main__":
     masa_builder = MasaPizzaBuilder()

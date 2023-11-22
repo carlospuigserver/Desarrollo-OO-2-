@@ -151,37 +151,37 @@ class Cliente:
             print(f"- {tipo}")
 
         tipo_elegido = input("Su elección: ").capitalize()
-        if tipo_elegido == "Mochi Ice Cream":
+        tipo_elegido_lower = tipo_elegido.lower()
+        if tipo_elegido_lower == "mochi ice cream":
             builder.construir_mochi_ice_cream()
-        elif tipo_elegido == "Baklava":
+        elif tipo_elegido_lower == "baklava":
             builder.construir_baklava()
-        elif tipo_elegido == "Dulce de Tres Leches con Coco":
+        elif tipo_elegido_lower == "dulce de tres leches con coco":
             builder.construir_dulce_tres_leches_coco()
-        elif tipo_elegido == "Sorvete de Açaí":
+        elif tipo_elegido_lower == "sorvete de açaí":
             builder.construir_sorvete_acai()
-        elif tipo_elegido == "Anmitsu":
+        elif tipo_elegido_lower == "anmitsu":
             builder.construir_anmitsu()
-        elif tipo_elegido == "Kulfi":
+        elif tipo_elegido_lower == "kulfi":
             builder.construir_kulfi()
-        elif tipo_elegido == "Knafeh":
+        elif tipo_elegido_lower == "knafeh":
             builder.construir_knafeh()
-        elif tipo_elegido == "Tiramisú":
+        elif tipo_elegido_lower == "tiramisú":
             builder.construir_tiramisu()
-        elif tipo_elegido == "Panna Cotta":
+        elif tipo_elegido_lower == "panna cotta":
             builder.construir_panna_cotta()
-        elif tipo_elegido == "Pastel de Chocolate":
+        elif tipo_elegido_lower == "pastel de chocolate":
             builder.construir_pastel_chocolate()
-        elif tipo_elegido == "Cheesecake":
+        elif tipo_elegido_lower == "cheesecake":
             builder.construir_cheesecake()
-        elif tipo_elegido == "Mousse de Frambuesa":
+        elif tipo_elegido_lower == "mousse de frambuesa":
             builder.construir_mousse_frambuesa()
-        elif tipo_elegido == "Tarta de Limón":
+        elif tipo_elegido_lower == "tarta de limón":
             builder.construir_tarta_limon()
-        elif tipo_elegido == "Profiteroles":
+        elif tipo_elegido_lower == "profiteroles":
             builder.construir_profiteroles()
         else:
             print("No se ha encontrado el tipo de postre elegido.")
-
 
 if __name__ == "__main__":
     builder = PostreBuilder()
