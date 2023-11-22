@@ -318,7 +318,40 @@ class Cliente:
         builder.anadir_ingredientes_gourmet(ingredientes_elegidos)
         return builder.obtener_extras()
 
-    
+    def elegir_postre(self, builder):
+        print("Tipos de postres disponibles:")
+        tipos_postres = [
+            "Mochi Ice Cream",
+            "Baklava",
+            "Dulce de Tres Leches con Coco",
+            "Sorvete de Açaí",
+            "Anmitsu",
+            "Kulfi",
+            "Knafeh",
+            "Tiramisú",
+            "Panna Cotta",
+            "Pastel de Chocolate",
+            "Cheesecake",
+            "Mousse de Frambuesa",
+            "Tarta de Limón",
+            "Profiteroles"
+        ]
+        print("Elija el tipo de postre escribiendo el número correspondiente:")
+        for i, tipo in enumerate(tipos_postres, start=1):
+            print(f"{i}. {tipo}")
+
+        opcion = input("Su elección (número): ")
+        try:
+            opcion = int(opcion)
+            if 1 <= opcion <= len(tipos_postres):
+                tipo_elegido = tipos_postres[opcion - 1]
+                # Construir el postre elegido
+                getattr(builder, f"construir_{tipo_elegido.lower().replace(' ', '_')}")()
+                print(f"Postre elegido: {tipo_elegido}")
+            else:
+                print("Número fuera de rango.")
+        except ValueError:
+            print("Por favor, ingrese un número válido.")
 
 if __name__ == "__main__":
     masa_builder = MasaPizzaBuilder()

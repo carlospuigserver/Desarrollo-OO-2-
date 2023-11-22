@@ -1,6 +1,6 @@
 
 from menu_selector import*
-
+from postre_builder import *
 from cliente import *
 import csv
 
@@ -107,26 +107,54 @@ if opcion_menu == "1":
 
                                 
 
-                                # Mostrar el resumen del pedido
-                                print(f"Resumen del Pedido: {menu_pedido.operation()}")
-                                precio=25
-                                print(f"El precio total es de:", precio)
+                                desea_postre = input("¿Desea añadir un postre a su pedido? (Sí/No): ").lower()
+                                precio=25.0
+                                if desea_postre == "sí":
+                                    postre_builder = PostreBuilder()
+                                    cliente.elegir_postre(postre_builder)
+                                    postre = postre_builder.obtener_postre()
+                                    print(f"Postre elegido: {postre}, precio t")
 
-                                # Guardar los detalles de la pizza personalizada en un archivo CSV (pizzas.csv)
-                                with open('storage/pizzas.csv', 'a', newline='') as file:
-                                    writer = csv.writer(file)
-                                    writer.writerow([
-                                        nombre_usuario,
-                                        f"Elegida masa: {masa_elegida.tipo}",
-                                        f"Elegida salsa: {salsa_elegida.tipo}",
-                                        f"Elegidos ingredientes: {ingredientes_elegidos}",
-                                        f"Elegida bebida: {bebida_elegida.tipo}",
-                                        f"Elegida técnica de cocción: {coccion_elegida.metodo}",
-                                        f"Elegida presentación: {presentacion_elegida.tipo}",
-                                        f"Elegidos extras: {extras_elegidos}",
-                                        f"El precio fijo por la elección de la pizza personalizada es de:",precio
-                                    ])
-                                print("Detalles de la pizza personalizada guardados en pizzas.csv")
+                                    # Calcular el precio total sumando el precio de la pizza y el precio del postre
+                                    
+                                    precio_total = precio + postre.precio
+
+                                    # Guardar los detalles de la pizza y el postre en un archivo CSV (pizza-postre.csv)
+                                    with open('storage/pizzas-postre.csv', 'a', newline='') as file:
+                                        writer = csv.writer(file)
+                                        writer.writerow([
+                                            nombre_usuario,
+                                            f"Elegida masa: {masa_elegida.tipo}",
+                                            f"Elegida salsa: {salsa_elegida.tipo}",
+                                            f"Elegidos ingredientes: {ingredientes_elegidos}",
+                                            f"Elegida bebida: {bebida_elegida.tipo}",
+                                            f"Elegida técnica de cocción: {coccion_elegida.metodo}",
+                                            f"Elegida presentación: {presentacion_elegida.tipo}",
+                                            f"Elegidos extras: {extras_elegidos}",
+                                            f"Postre elegido: {postre.nombre}",
+                                            f"Precio total: {precio_total:.2f}"
+                                        ])
+                                    print("Vaya!!!, has elegido",{postre.nombre},"que gran elección!!")
+                                    print("El precio total por la elección de la pizza personalizada y el postre es: ",precio_total)
+                                    print("Detalles de la pizza y el postre guardados en pizza-postre.csv")
+                                else:
+                                    # Guardar solo los detalles de la pizza en el archivo original (pizzas.csv)
+                                    with open('storage/pizzas.csv', 'a', newline='') as file:
+                                        writer = csv.writer(file)
+                                        writer.writerow([
+                                            nombre_usuario,
+                                            f"Elegida masa: {masa_elegida.tipo}",
+                                            f"Elegida salsa: {salsa_elegida.tipo}",
+                                            f"Elegidos ingredientes: {ingredientes_elegidos}",
+                                            f"Elegida bebida: {bebida_elegida.tipo}",
+                                            f"Elegida técnica de cocción: {coccion_elegida.metodo}",
+                                            f"Elegida presentación: {presentacion_elegida.tipo}",
+                                            f"Elegidos extras: {extras_elegidos}",
+                                            f"Precio fijo por la elección de la pizza personalizada: {precio}"
+                                        ])
+
+                                    print("Que gran elección!!! El precio total por la elección de la pizza personalizada es: ",precio)
+                                    print("Detalles de la pizza guardados en pizzas.csv")
 
 elif opcion_menu == "2":
     from Menus.menu_simple import*
