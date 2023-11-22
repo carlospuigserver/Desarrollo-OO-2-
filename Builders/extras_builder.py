@@ -47,52 +47,55 @@ class ExtrasPizzaBuilder(BuilderExtrasPizza):
 # Director (Cliente)
 class Cliente:
     def elegir_extras(self, builder):
+        opciones_borde = {
+            "1": "Relleno de queso",
+            "2": "Ajo y queso parmesano",
+            "3": "Crust de queso",
+            "4": "Relleno de pepperoni o jamón",
+            "5": "Relleno de verduras"
+        }
+
+        opciones_ingredientes = {
+            "1": "Trufas",
+            "2": "Caviar",
+            "3": "Foie Gras",
+            "4": "Jamón Iberico",
+            "5": "Quesos exclusivos",
+            "6": "Setas silvestres",
+            "7": "Mariscos de alta calidad",
+            "8": "Verduras orgánicas y raras"
+        }
+
+        # Preguntar si desea borde relleno
         quiere_borde_relleno = input("¿Desea su borde relleno? (Sí/No): ")
+
+        # Si sí, mostrar opciones y obtener elección
         if quiere_borde_relleno.lower() == "sí":
-            print("¿Qué borde relleno desea?")
-            print("1. Relleno de queso")
-            print("2. Ajo y queso parmesano")
-            print("3. Crust de queso")
-            print("4. Relleno de pepperoni o jamón")
-            print("5. Relleno de verduras")
+            print("Opciones de borde relleno disponibles:")
+            for key, value in opciones_borde.items():
+                print(f"{key}. {value}")
+            borde_elegido = opciones_borde.get(input("Su elección (borde relleno) (numero 1-5): "), "")
+            builder.anadir_borde_relleno(borde_elegido)
 
-            borde = input("Su elección (borde relleno): ")
-            opciones_borde = {
-                "1": "Relleno de queso",
-                "2": "Ajo y queso parmesano",
-                "3": "Crust de queso",
-                "4": "Relleno de pepperoni o jamón",
-                "5": "Relleno de verduras"
-            }
-            builder.anadir_borde_relleno(opciones_borde.get(borde, ""))
-
+        # Preguntar si desea ingredientes gourmet
         quiere_ingredientes_gourmet = input("¿Desea algún ingrediente gourmet? (Sí/No): ")
-        if quiere_ingredientes_gourmet.lower() == "sí":
-            print("¿Qué ingrediente gourmet desea?")
-            print("1. Trufas")
-            print("2. Caviar")
-            print("3. Foie Gras")
-            print("4. Jamón Ibérico")
-            print("5. Quesos exclusivos")
-            print("6. Setas silvestres")
-            print("7. Mariscos de alta calidad")
-            print("8. Verduras orgánicas y raras")
+        ingredientes_elegidos = []
 
-            ingrediente = input("Su elección (ingrediente gourmet): ")
-            opciones_ingredientes = {
-                "1": "Trufas",
-                "2": "Caviar",
-                "3": "Foie Gras",
-                "4": "Jamón Ibérico",
-                "5": "Quesos exclusivos",
-                "6": "Setas silvestres",
-                "7": "Mariscos de alta calidad",
-                "8": "Verduras orgánicas y raras"
-            }
-            builder.anadir_ingredientes_gourmet(opciones_ingredientes.get(ingrediente, ""))
+        # Si sí, mostrar opciones y obtener elección
+        while quiere_ingredientes_gourmet.lower() == "sí":
+            print("Opciones de ingredientes gourmet disponibles:")
+            for key, value in opciones_ingredientes.items():
+                print(f"{key}. {value}")
+            ingrediente = input("Su elección (ingrediente gourmet) (numero 1-8): ")
+            ingrediente_elegido = opciones_ingredientes.get(ingrediente, "")
+            if ingrediente_elegido:
+                ingredientes_elegidos.append(ingrediente_elegido)
+            else:
+                print("Opción de ingrediente no válida.")
+            quiere_ingredientes_gourmet = input("¿Desea otro ingrediente gourmet? (Sí/No): ")
 
+        builder.anadir_ingredientes_gourmet(ingredientes_elegidos)
         return builder.obtener_extras()
-
 if __name__ == "__main__":
     builder = ExtrasPizzaBuilder()
     cliente = Cliente()

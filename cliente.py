@@ -54,11 +54,16 @@ class Cliente:
             "Cracker"
         ]
 
-        print("Elija el tipo de masa escribiendo su nombre:")
-        for tipo in tipos_masa:
-            print(f"- {tipo}")
+        print("Elija el tipo de masa escribiendo su nombre o el número correspondiente:")
+        for i, tipo in enumerate(tipos_masa, start=1):
+            print(f"{i}. {tipo}")
 
-        tipo_elegido = input("Su elección: ").capitalize()
+        opcion = input("Su elección: ")
+
+        if opcion.isdigit() and 1 <= int(opcion) <= len(tipos_masa):
+            tipo_elegido = tipos_masa[int(opcion) - 1]
+        else:
+            tipo_elegido = opcion.capitalize()
 
         if tipo_elegido in tipos_masa:
             if tipo_elegido == "Delgada":
@@ -80,7 +85,7 @@ class Cliente:
             elif tipo_elegido == "Cracker":
                 builder.construir_masa_cracker()
             else:
-                print("Tipo de salsa no válido")
+                print("Tipo de masa no válido")
                 return None
 
             return builder.obtener_masa()
@@ -89,6 +94,9 @@ class Cliente:
             print("Tipo de masa no disponible")
             return None
         
+
+    
+    
 
     def elegir_salsa(self, builder):
         print("Tipos de salsa disponibles:")
@@ -101,14 +109,18 @@ class Cliente:
             "Champiñones",
             "Tomate sin gluten",
             "Autor"
-            
         ]
 
-        print("Elija el tipo de salsa escribiendo su nombre:")
-        for tipo in tipos_salsa:
-            print(f"- {tipo}")
+        print("Elija el tipo de salsa escribiendo su nombre o el número correspondiente:")
+        for i, tipo in enumerate(tipos_salsa, start=1):
+            print(f"{i}. {tipo}")
 
-        tipo_elegido = input("Su elección: ").capitalize()
+        opcion = input("Su elección: ")
+
+        if opcion.isdigit() and 1 <= int(opcion) <= len(tipos_salsa):
+            tipo_elegido = tipos_salsa[int(opcion) - 1]
+        else:
+            tipo_elegido = opcion.capitalize()
 
         if tipo_elegido in tipos_salsa:
             if tipo_elegido == "Tomate Clásica":
@@ -137,6 +149,8 @@ class Cliente:
             print("Tipo de salsa no disponible")
             return None
 
+   
+
     def elegir_ingredientes(self, builder):
         while True:
             print("Seleccione los ingredientes para la pizza:")
@@ -161,10 +175,11 @@ class Cliente:
         ]
 
         print("Elija el tipo de bebida escribiendo su nombre:")
-        for tipo in tipos_bebida:
-            print(f"- {tipo}")
+        for i, tipo in enumerate(tipos_bebida, start=1):
+            print(f"{i}. {tipo}")
 
-        tipo_elegido = input("Su elección: ").capitalize()
+        opcion = input("Su elección: ")
+        tipo_elegido = tipos_bebida[int(opcion) - 1] if opcion.isdigit() and 1 <= int(opcion) <= len(tipos_bebida) else opcion.capitalize()
 
         if tipo_elegido == "Vino Blanco":
             builder.construir_vino_blanco()
@@ -185,21 +200,22 @@ class Cliente:
     def elegir_coccion(self, builder):
         print("Métodos de cocción disponibles:")
         metodos_coccion = [
-            "Horno de lena",
+            "Horno de leña",
             "Horno eléctrico",
             "Piedra para pizzas",
             "Parrilla para pizzas"
         ]
 
         print("Elija el método de cocción escribiendo su nombre:")
-        for metodo in metodos_coccion:
-            print(f"- {metodo}")
+        for i, metodo in enumerate(metodos_coccion, start=1):
+            print(f"{i}. {metodo}")
 
-        metodo_elegido = input("Su elección: ").capitalize()
+        opcion = input("Su elección: ")
+        metodo_elegido = metodos_coccion[int(opcion) - 1] if opcion.isdigit() and 1 <= int(opcion) <= len(metodos_coccion) else opcion.capitalize()
 
-        if metodo_elegido == "Horno de lena":
+        if metodo_elegido == "Horno de leña":
             builder.construir_horno_lena()
-        elif metodo_elegido == "Horno electrico":
+        elif metodo_elegido == "Horno eléctrico":
             builder.construir_horno_electrico()
         elif metodo_elegido == "Piedra para pizzas":
             builder.construir_piedra_pizzas()
@@ -214,7 +230,7 @@ class Cliente:
         print("Opciones de presentación disponibles:")
         opciones_presentacion = [
             "Tabla de madera",
-            "Plato de cerámica clasica",
+            "Plato de cerámica clásica",
             "Sobre plataforma de plata",
             "Sobre plataforma de oro",
             "Plato de cristal",
@@ -223,27 +239,28 @@ class Cliente:
             "Plato de porcelana"
         ]
 
-        print("Elija el tipo de presentación escribiendo su nombre :")
-        for idx, opcion in enumerate(opciones_presentacion, start=1):
-            print(f"{idx}. {opcion}")
+        print("Elija el tipo de presentación escribiendo su nombre:")
+        for i, opcion in enumerate(opciones_presentacion, start=1):
+            print(f"{i}. {opcion}")
 
-        opcion_elegida = input("Su elección: ").capitalize()
+        opcion = input("Su elección: ")
+        opcion_elegida = opciones_presentacion[int(opcion) - 1] if opcion.isdigit() and 1 <= int(opcion) <= len(opciones_presentacion) else opcion.capitalize()
 
-        if opcion_elegida == "Tabla de madera" :
+        if opcion_elegida == "Tabla de madera":
             builder.construir_tabla_madera()
-        elif opcion_elegida == "Plato de cerámica clásica" :
+        elif opcion_elegida == "Plato de cerámica clásica":
             builder.construir_plato_ceramica_clasica()
-        elif opcion_elegida == "Sobre plataforma de plata" :
+        elif opcion_elegida == "Sobre plataforma de plata":
             builder.construir_plataforma_plata()
         elif opcion_elegida == "Sobre plataforma de oro":
             builder.construir_plataforma_oro()
-        elif opcion_elegida == "Plato de cristal" :
+        elif opcion_elegida == "Plato de cristal":
             builder.construir_plato_cristal()
-        elif opcion_elegida == "Sobre piedra" :
+        elif opcion_elegida == "Sobre piedra":
             builder.construir_sobre_piedra()
-        elif opcion_elegida == "Plato de terracota" :
+        elif opcion_elegida == "Plato de terracota":
             builder.construir_plato_terracota()
-        elif opcion_elegida == "Plato de porcelana"  :
+        elif opcion_elegida == "Plato de porcelana":
             builder.construir_plato_porcelana()
         else:
             print("Opción de presentación no válida")
@@ -270,13 +287,26 @@ class Cliente:
             "8": "Verduras orgánicas y raras"
         }
 
+        # Preguntar si desea borde relleno
         quiere_borde_relleno = input("¿Desea su borde relleno? (Sí/No): ")
-        borde_elegido = opciones_borde.get(input("Su elección (borde relleno) (numero 1-5) : "), "")
 
+        # Si sí, mostrar opciones y obtener elección
+        if quiere_borde_relleno.lower() == "sí":
+            print("Opciones de borde relleno disponibles:")
+            for key, value in opciones_borde.items():
+                print(f"{key}. {value}")
+            borde_elegido = opciones_borde.get(input("Su elección (borde relleno) (numero 1-5): "), "")
+            builder.anadir_borde_relleno(borde_elegido)
+
+        # Preguntar si desea ingredientes gourmet
         quiere_ingredientes_gourmet = input("¿Desea algún ingrediente gourmet? (Sí/No): ")
         ingredientes_elegidos = []
-        
+
+        # Si sí, mostrar opciones y obtener elección
         while quiere_ingredientes_gourmet.lower() == "sí":
+            print("Opciones de ingredientes gourmet disponibles:")
+            for key, value in opciones_ingredientes.items():
+                print(f"{key}. {value}")
             ingrediente = input("Su elección (ingrediente gourmet) (numero 1-8): ")
             ingrediente_elegido = opciones_ingredientes.get(ingrediente, "")
             if ingrediente_elegido:
@@ -285,10 +315,8 @@ class Cliente:
                 print("Opción de ingrediente no válida.")
             quiere_ingredientes_gourmet = input("¿Desea otro ingrediente gourmet? (Sí/No): ")
 
-        builder.anadir_borde_relleno(borde_elegido)
         builder.anadir_ingredientes_gourmet(ingredientes_elegidos)
         return builder.obtener_extras()
-
 
     
 

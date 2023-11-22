@@ -23,3 +23,13 @@ Queso: Ninguno
 Carne: Ninguno
 Mariscos: Ninguno
 Vegetales: Tomate",Elegida bebida: Coctel,Elegida técnica de cocción: Horno de leña,Elegida presentación: Sobre piedra,"Elegidos extras: Borde relleno: Crust de queso, Ingredientes gourmet: [['Caviar']]",El precio fijo por la elección de la pizza personalizada es de:,25
+f,Elegida masa: Delgada,Elegida salsa: Pesto,"Elegidos ingredientes: Ingredientes elegidos: 
+Queso: Parmesano
+Carne: Tocino
+Mariscos: Ninguno
+Vegetales: Ninguno",Elegida bebida: Coctel,Elegida tecnica de coccion: Horno eléctrico,Elegida presentación: Sobre plataforma de plata,"Elegidos extras: Borde relleno: Ajo y queso parmesano, Ingredientes gourmet: [['Foie Gras']]"
+w,Elegida masa: Madre,Elegida salsa: Blanca,"Elegidos ingredientes: Ingredientes elegidos: 
+Queso: Parmesano
+Carne: Pollo
+Mariscos: Camarones
+Vegetales: Pimientos",Elegida bebida: Cerveza,Elegida técnica de cocción: Piedra para pizzas,Elegida presentación: Plato de cerámica clásica,"Elegidos extras: Borde relleno: Relleno de queso, Ingredientes gourmet: [['Setas silvestres']]",El precio fijo por la elección de la pizza personalizada es de:,25
