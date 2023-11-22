@@ -105,6 +105,8 @@ if opcion_menu == "1":
                                 # Agregar la pizza personalizada al menú compuesto de pedido
                                 menu_pedido.add(pizza_personalizada)
 
+                                
+
                                 # Mostrar el resumen del pedido
                                 print(f"Resumen del Pedido: {menu_pedido.operation()}")
                                 precio=25
