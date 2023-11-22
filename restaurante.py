@@ -5,7 +5,16 @@ from cliente import *
 import csv
 
 
+from abc import ABC, abstractmethod
 
+class ComponenteMenu(ABC):
+    @abstractmethod
+    def obtener_precio(self):
+        pass
+
+    @abstractmethod
+    def obtener_presentacion(self):
+        pass
 
 
 
