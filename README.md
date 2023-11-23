@@ -1083,3 +1083,4 @@ if __name__ == "__main__":
 
 
 
+![uml](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/fa97626f-b683-497d-88a9-e8f6b8034ed3)
