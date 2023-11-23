@@ -22,7 +22,7 @@ def registrar_nuevo_usuario():
     contraseña = input("Ingrese una contraseña: ")
 
     # Guardar el nuevo usuario en el archivo CSV
-    with open('Usuario/usuario.csv', 'a', newline='') as file:
+    with open('EJERCICIO 1/Usuario/usuario.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([nombre_usuario, contraseña])
 
@@ -38,7 +38,7 @@ def obtener_usuarios():
     usuarios = set()
 
     # Leer usuarios desde el archivo CSV
-    with open('Usuario/usuario.csv', 'r') as file:
+    with open('EJERCICIO 1/Usuario/usuario.csv', 'r') as file:
         reader = csv.reader(file)
         for row in reader:
             if len(row) == 2:
@@ -369,7 +369,7 @@ def opciones_menu_combo_pareja():
 
 
 def escribir_menu_a_csv(menu_seleccionado, nombre_usuario):
-    nombre_archivo = "storage/menus.csv"
+    nombre_archivo = "EJERCICIO 1/storage/menus.csv"
 
     with open(nombre_archivo, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)

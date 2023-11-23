@@ -21,14 +21,14 @@ def registrar_nuevo_usuario():
     nombre_usuario = input("Introduce tu nombre de usuario: ")
     contraseña = input("Introduce tu contraseña: ")
 
-    with open('Usuario/usuario.csv', mode='a', newline='') as file:
+    with open('EJERCICIO 1/Usuario/usuario.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([nombre_usuario, contraseña])
         print(f"El usuario '{nombre_usuario}' se ha registrado con éxito.")
 
 # Función para autenticar un usuario
 def autenticar_usuario(nombre_usuario, contraseña):
-    with open('Usuario/usuario.csv', mode='r', newline='') as file:
+    with open('EJERCICIO 1/Usuario/usuario.csv', mode='r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
             if len(row) >= 2:  # Verifica si la lista tiene al menos dos elementos
@@ -419,7 +419,7 @@ if __name__ == "__main__":
                          
                             
                     # Guardar los detalles del pedido en un archivo CSV (pizzas.csv)
-                    with open('storage/pizzas.csv', 'a', newline='') as file:
+                    with open('EJERCICIO 1/storage/pizzas.csv', 'a', newline='') as file:
                         writer = csv.writer(file)
                         writer.writerow([
                             nombre_usuario,

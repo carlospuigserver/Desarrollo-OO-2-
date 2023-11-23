@@ -129,7 +129,7 @@ if opcion_menu == "1":
                                     precio_total = precio + postre.precio
 
                                     # Guardar los detalles de la pizza y el postre en un archivo CSV (pizza-postre.csv)
-                                    with open('storage/pizzas-postre.csv', 'a', newline='') as file:
+                                    with open('EJERCICIO 1/storage/pizzas-postre.csv', 'a', newline='') as file:
                                         writer = csv.writer(file)
                                         writer.writerow([
                                             nombre_usuario,
@@ -148,7 +148,7 @@ if opcion_menu == "1":
                                     print("Detalles de la pizza y el postre guardados en pizza-postre.csv")
                                 else:
                                     # Guardar solo los detalles de la pizza en el archivo original (pizzas.csv)
-                                    with open('storage/pizzas.csv', 'a', newline='') as file:
+                                    with open('EJERCICIO 1/storage/pizzas.csv', 'a', newline='') as file:
                                         writer = csv.writer(file)
                                         writer.writerow([
                                             nombre_usuario,
@@ -190,7 +190,7 @@ elif opcion_menu == "2":
         contraseña = input("Ingrese una contraseña: ")
 
         # Guardar el nuevo usuario en el archivo CSV
-        with open('Usuario/usuario.csv', 'a', newline='') as file:
+        with open('EJERCICIO 1/Usuario/usuario.csv', 'a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([nombre_usuario, contraseña])
 
@@ -206,7 +206,7 @@ elif opcion_menu == "2":
         usuarios = set()
 
         # Leer usuarios desde el archivo CSV
-        with open('Usuario/usuario.csv', 'r') as file:
+        with open('EJERCICIO 1/Usuario/usuario.csv', 'r') as file:
             reader = csv.reader(file)
             for row in reader:
                 if len(row) == 2:
@@ -537,7 +537,7 @@ elif opcion_menu == "2":
 
 
     def escribir_menu_a_csv(menu_seleccionado, nombre_usuario):
-        nombre_archivo = "storage/menus.csv"
+        nombre_archivo = "EJERCICIO 1/storage/menus.csv"
 
         with open(nombre_archivo, 'a', newline='') as csv_file:
             writer = csv.writer(csv_file)
