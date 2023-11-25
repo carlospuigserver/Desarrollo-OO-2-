@@ -1,3 +1,11 @@
+import csv
+import os
+import getpass
+
+#import csv
+import os
+
+# Clase base para documentos
 class Documento:
     def __init__(self, nombre, tipo, tamaño, contenido):
         self.nombre = nombre
@@ -21,21 +29,58 @@ class Documento:
     def operation(self) -> str:
         return f"Documento {self.tipo} {self.nombre}"
 
-# Agregar funciones para manejar las crónicas, imágenes y videos
-
+# Función para acceder a un documento
 def acceder_documento(documento):
-    usuario = input("Ingresa tu nombre de usuario: ")
-    contenido = documento.acceder(usuario)
-    print(f"Contenido del documento:\n{contenido}")
+    if documento.tipo in ["Imagen", "Video"]:
+        # Acceder a documentos de imagen o video sin preguntar
+        contenido = documento.acceder("Usuario Anónimo")
+        print(f"Contenido del documento:\n{contenido}")
+    elif documento.tipo == "Texto":
+        # Acceder a documentos de texto con creación de usuario
+        usuario = crear_usuario()
+        contenido = documento.acceder(usuario)
+        print(f"Contenido del documento:\n{contenido}")
 
-    opcion_modificar = input("¿Quieres modificar el documento? (si/no): ").lower()
-    if opcion_modificar == "si" and documento.tipo == "Texto":
-        modificar_documento(documento)
+        opcion_modificar = input("¿Quieres modificar el documento? (si/no): ").lower()
+        if opcion_modificar == "si":
+            modificar_documento(documento, usuario)
 
-def modificar_documento(documento):
-    usuario = input("Ingresa tu nombre de usuario: ")
-    nuevo_contenido = input("Ingresa el nuevo contenido: ")
-    documento.modificar(usuario, nuevo_contenido)
+# Función para crear un usuario
+def crear_usuario():
+    nuevo_usuario = input("Ingresa un nombre de usuario: ")
+    contrasena = input("Ingresa una contraseña: ")
+
+    # Guardar el usuario en un archivo CSV
+    with open("EJERCICIO 2/usuarios.csv", mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([nuevo_usuario, contrasena])
+
+    return nuevo_usuario
+
+# Función para modificar un documento
+def modificar_documento(documento, usuario):
+    # Verificar credenciales del usuario
+    if verificar_credenciales(usuario):
+        nuevo_contenido = input("Ingresa el nuevo contenido: ")
+        documento.modificar(usuario, nuevo_contenido)
+        # Guardar la solicitud de cambio en un archivo CSV
+        with open("EJERCICIO 2/sugerencias.csv", mode="a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([usuario, documento.nombre, nuevo_contenido, "Modificación"])
+    else:
+        print("Credenciales incorrectas. No puedes modificar el documento.")
+
+# Función para verificar credenciales del usuario
+def verificar_credenciales(usuario):
+    contrasena = input("Ingresa tu contraseña: ")
+
+    # Verificar en el archivo de usuarios
+    with open("EJERCICIO 2/usuarios.csv", mode="r") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row[0] == usuario and row[1] == contrasena:
+                return True
+    return False
 
 class DocumentoTexto(Documento):
     def __init__(self, nombre, tamaño, contenido):
@@ -134,52 +179,53 @@ if __name__ == "__main__":
                 seleccion_cronica = int(input("Selecciona una crónica (1, 2 o 3): "))
                 if seleccion_cronica == 1:
                     acceder_documento(cronica1)
-                    print("El tamaño del documento es: ",cronica1.tamaño,"KB")
+                    print("El tamaño del documento es: ", cronica1.tamaño, "KB")
                 elif seleccion_cronica == 2:
                     acceder_documento(cronica2)
-                    print("El tamaño del documento es: ",cronica2.tamaño,"KB")
+                    print("El tamaño del documento es: ", cronica2.tamaño, "KB")
                 elif seleccion_cronica == 3:
                     acceder_documento(cronica3)
-                    print("El tamaño del documento es: ",cronica3.tamaño,"KB")
+                    print("El tamaño del documento es: ", cronica3.tamaño, "KB")
                 else:
                     print("Opción no válida. Inténtelo de nuevo.")
 
             elif tipo_documento == 2:
-                 print("A que documento de imagen quiere acceder:")
-                 print("1. Imágebnes Real Madrid vs Psg (vuelta)")
-                 print("2. Imágenes Real Madrid vs Chelsea (vuelta)")
-                 print("3. Imágenes Real Madrid vs Manchester City (vuelta)")
-                 
-                 seleccion_imagen = int(input("Selecciona un documento de Imágenes (1, 2 o 3): "))
-                 if seleccion_imagen == 1:
-                     acceder_documento(imagenes_cronica1)
-                     print("El tamaño del documento es: ",imagenes_cronica1.tamaño,"KB")
-                 elif seleccion_imagen == 2: 
-                        acceder_documento(imagenes_cronica2)
-                        print("El tamaño del documento es: ",imagenes_cronica2.tamaño,"KB")
-                 elif seleccion_imagen == 3:
-                        acceder_documento(imagenes_cronica3)
-                        print("El tamaño del documento es: ",imagenes_cronica3.tamaño,"KB")
-                 else:
-                      print("Opción no válida. Inténtelo de nuevo.")
-                
+                # Acceder a documentos de imagen
+                print("A qué documento de imagen quieres acceder:")
+                print("1. Imágenes Real Madrid vs Psg (vuelta)")
+                print("2. Imágenes Real Madrid vs Chelsea (vuelta)")
+                print("3. Imágenes Real Madrid vs Manchester City (vuelta)")
+
+                seleccion_imagen = int(input("Selecciona un documento de Imágenes (1, 2 o 3): "))
+                if seleccion_imagen == 1:
+                    acceder_documento(imagenes_cronica1)
+                    print("El tamaño del documento es: ", imagenes_cronica1[0].tamaño, "KB")
+                elif seleccion_imagen == 2:
+                    acceder_documento(imagenes_cronica2)
+                    print("El tamaño del documento es: ", imagenes_cronica2[0].tamaño, "KB")
+                elif seleccion_imagen == 3:
+                    acceder_documento(imagenes_cronica3)
+                    print("El tamaño del documento es: ", imagenes_cronica3[0].tamaño, "KB")
+                else:
+                    print("Opción no válida. Inténtelo de nuevo.")
 
             elif tipo_documento == 3:
-                print("A que documento de video quiere acceder:")
+                # Acceder a documentos de video
+                print("A qué documento de video quieres acceder:")
                 print("1. Videos Real Madrid vs Psg (vuelta)")
                 print("2. Videos Real Madrid vs Chelsea (vuelta)")
                 print("3. Videos Real Madrid vs Manchester City (vuelta)")
-                
+
                 seleccion_video = int(input("Selecciona un documento de Video (1, 2 o 3): "))
                 if seleccion_video == 1:
                     acceder_documento(videos_cronica1)
-                    print("El tamaño del documento es: ",videos_cronica1.tamaño,"KB")
+                    print("El tamaño del documento es: ", videos_cronica1[0].tamaño, "KB")
                 elif seleccion_video == 2:
                     acceder_documento(videos_cronica2)
-                    print("El tamaño del documento es: ",videos_cronica2.tamaño,"KB")
+                    print("El tamaño del documento es: ", videos_cronica2[0].tamaño, "KB")
                 elif seleccion_video == 3:
                     acceder_documento(videos_cronica3)
-                    print("El tamaño del documento es: ",videos_cronica3.tamaño,"KB")
+                    print("El tamaño del documento es: ", videos_cronica3[0].tamaño, "KB")
                 else:
                     print("Opción no válida. Inténtelo de nuevo.")
 
