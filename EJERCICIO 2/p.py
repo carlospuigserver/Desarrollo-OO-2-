@@ -30,20 +30,25 @@ class Documento:
         return f"Documento {self.tipo} {self.nombre}"
 
 # Función para acceder a un documento
-def acceder_documento(documento):
-    if documento.tipo in ["Imagen", "Video"]:
-        # Acceder a documentos de imagen o video sin preguntar
-        contenido = documento.acceder("Usuario Anónimo")
-        print(f"Contenido del documento:\n{contenido}")
-    elif documento.tipo == "Texto":
-        # Acceder a documentos de texto con creación de usuario
-        usuario = crear_usuario()
-        contenido = documento.acceder(usuario)
-        print(f"Contenido del documento:\n{contenido}")
+# Función para acceder a un documento
+def acceder_documento(documentos):
+    for documento in documentos:
+        if documento.tipo in ["Imagen", "Video"]:
+            # Mostrar el título del documento
+            print(f"Título del documento: {documento.nombre}")
+            # Acceder a documentos de imagen o video sin preguntar
+            contenido = documento.acceder("Usuario Anónimo")
+            print(f"Contenido del documento:\n{contenido}")
+        elif documento.tipo == "Texto":
+            # Acceder a documentos de texto con creación de usuario
+            usuario = crear_usuario()
+            contenido = documento.acceder(usuario)
+            print(f"Contenido del documento:\n{contenido}")
 
-        opcion_modificar = input("¿Quieres modificar el documento? (si/no): ").lower()
-        if opcion_modificar == "si":
-            modificar_documento(documento, usuario)
+            opcion_modificar = input("¿Quieres modificar el documento? (si/no): ").lower()
+            if opcion_modificar == "si":
+                modificar_documento(documento, usuario)
+
 
 # Función para crear un usuario
 def crear_usuario():
@@ -122,6 +127,7 @@ imagenes_cronica1 = [
     DocumentoImagenCronica("ImagenCronica1_3", 3072, "Celebración gol de Benzema(2) (2-1)"),
     DocumentoImagenCronica("ImagenCronica1_4", 4096, "Celebración gol de Benzema(3) (3-1)")
 ]
+tamaño_imagenes_cronica1 = imagenes_cronica1[0].tamaño  + imagenes_cronica1[1].tamaño + imagenes_cronica1[2].tamaño + imagenes_cronica1[3].tamaño
 
 imagenes_cronica2 = [
     DocumentoImagenCronica("ImagenCronica2_1", 512, "Celebración gol  Rüdiger(1) (0-2) "),
@@ -129,14 +135,14 @@ imagenes_cronica2 = [
     DocumentoImagenCronica("ImagenCronica2_3", 1536, "Celebración gol  Rodrygo(1) (1-3)"),
     DocumentoImagenCronica("ImagenCronica2_4", 2048, "Celebración gol  Benzema(1) (2-3)")
 ]
-
+tamaño_imagenes_cronica2 = imagenes_cronica2[0].tamaño  + imagenes_cronica2[1].tamaño + imagenes_cronica2[2].tamaño + imagenes_cronica2[3].tamaño
 imagenes_cronica3 = [
     DocumentoImagenCronica("ImagenCronica3_1", 768, "Celebración gol  Mahrez(1) (0-1)"),
     DocumentoImagenCronica("ImagenCronica3_2", 1536, "Celebración gol  Rodrygo(1) (1-1)"),
     DocumentoImagenCronica("ImagenCronica3_3", 2304, "Celebración gol  Rodrygo(2) (2-1)"),
     DocumentoImagenCronica("ImagenCronica3_4", 3072, "Celebración gol  Benzema(1) (3-1)")
 ]
-
+tamaño_imagenes_cronica3 = imagenes_cronica3[0].tamaño  + imagenes_cronica3[1].tamaño + imagenes_cronica3[2].tamaño + imagenes_cronica3[3].tamaño
 # documentos.py
 class DocumentoVideoCronica(Documento):
     def __init__(self, nombre, tamaño, contenido):
@@ -199,13 +205,14 @@ if __name__ == "__main__":
                 seleccion_imagen = int(input("Selecciona un documento de Imágenes (1, 2 o 3): "))
                 if seleccion_imagen == 1:
                     acceder_documento(imagenes_cronica1)
-                    print("El tamaño del documento es: ", imagenes_cronica1[0].tamaño, "KB")
+
+                    print("El tamaño del documento es: ", tamaño_imagenes_cronica1, "KB")
                 elif seleccion_imagen == 2:
                     acceder_documento(imagenes_cronica2)
-                    print("El tamaño del documento es: ", imagenes_cronica2[0].tamaño, "KB")
+                    print("El tamaño del documento es: ", tamaño_imagenes_cronica2, "KB")
                 elif seleccion_imagen == 3:
                     acceder_documento(imagenes_cronica3)
-                    print("El tamaño del documento es: ", imagenes_cronica3[0].tamaño, "KB")
+                    print("El tamaño del documento es: ", tamaño_imagenes_cronica3, "KB")
                 else:
                     print("Opción no válida. Inténtelo de nuevo.")
 
