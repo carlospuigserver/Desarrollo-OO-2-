@@ -103,7 +103,7 @@ videos_cronica1 = [
 ]
 
 videos_cronica2 = [
-    DocumentoVideoCronica("VideoCronica2_1", 5120, "Resumen y goles del Real Madrid 2-3 Chelsea"),
+    DocumentoVideoCronica("VideoCronica2_1", 8120, "Resumen y goles del Real Madrid 2-3 Chelsea"),
 ]
 
 videos_cronica3 = [
@@ -134,10 +134,13 @@ if __name__ == "__main__":
                 seleccion_cronica = int(input("Selecciona una crónica (1, 2 o 3): "))
                 if seleccion_cronica == 1:
                     acceder_documento(cronica1)
+                    print("El tamaño del documento es: ",cronica1.tamaño,"KB")
                 elif seleccion_cronica == 2:
                     acceder_documento(cronica2)
+                    print("El tamaño del documento es: ",cronica2.tamaño,"KB")
                 elif seleccion_cronica == 3:
                     acceder_documento(cronica3)
+                    print("El tamaño del documento es: ",cronica3.tamaño,"KB")
                 else:
                     print("Opción no válida. Inténtelo de nuevo.")
 
@@ -150,10 +153,13 @@ if __name__ == "__main__":
                  seleccion_imagen = int(input("Selecciona un documento de Imágenes (1, 2 o 3): "))
                  if seleccion_imagen == 1:
                      acceder_documento(imagenes_cronica1)
+                     print("El tamaño del documento es: ",imagenes_cronica1.tamaño,"KB")
                  elif seleccion_imagen == 2: 
                         acceder_documento(imagenes_cronica2)
+                        print("El tamaño del documento es: ",imagenes_cronica2.tamaño,"KB")
                  elif seleccion_imagen == 3:
                         acceder_documento(imagenes_cronica3)
+                        print("El tamaño del documento es: ",imagenes_cronica3.tamaño,"KB")
                  else:
                       print("Opción no válida. Inténtelo de nuevo.")
                 
@@ -167,10 +173,13 @@ if __name__ == "__main__":
                 seleccion_video = int(input("Selecciona un documento de Video (1, 2 o 3): "))
                 if seleccion_video == 1:
                     acceder_documento(videos_cronica1)
+                    print("El tamaño del documento es: ",videos_cronica1.tamaño,"KB")
                 elif seleccion_video == 2:
                     acceder_documento(videos_cronica2)
+                    print("El tamaño del documento es: ",videos_cronica2.tamaño,"KB")
                 elif seleccion_video == 3:
                     acceder_documento(videos_cronica3)
+                    print("El tamaño del documento es: ",videos_cronica3.tamaño,"KB")
                 else:
                     print("Opción no válida. Inténtelo de nuevo.")
 
