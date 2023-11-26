@@ -156,21 +156,50 @@ def verificar_credenciales(usuario):
     return False
 
 # Función para gestionar sugerencias como gestor
-def gestionar_sugerencias():
-    # Mostrar sugerencias almacenadas en el archivo CSV
-    with open("EJERCICIO 2/sugerencias.csv", mode="r") as file:
+def verificar_credenciales_gestor(usuario, contrasena):
+    # Verificar en el archivo de usuarios gestores
+    with open("EJERCICIO 2/usuarios-gestor.csv", mode="r") as file:
         reader = csv.reader(file)
         for row in reader:
-            print(f"Sugerencia de {row[0]} para el documento {row[1]}: {row[2]}")
+            if row[0] == usuario and row[1] == contrasena:
+                return True
+    return False
 
-    # Tomar decisiones sobre las sugerencias (modificar documentos)
-    decision = input("¿Quieres aplicar las sugerencias? (si/no): ").lower()
-    if decision == "si":
-        # Implementar lógica para aplicar sugerencias
-        print("Sugerencias aplicadas correctamente.")
+# Función para registrar un nuevo usuario gestor
+def registrar_usuario_gestor():
+    nuevo_usuario = input("Ingresa tu nombre de usuario: ")
+    contrasena = input("Ingresa tu contraseña: ")
+
+    # Guardar el usuario en el archivo CSV de usuarios gestores
+    with open("EJERCICIO 2/usuarios-gestor.csv", mode="a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([nuevo_usuario, contrasena])
+
+    print("Registro exitoso. Ahora puedes iniciar sesión como gestor.")
+
+# Función para gestionar sugerencias como gestor
+def gestionar_sugerencias():
+    # Pedir credenciales para iniciar sesión como gestor
+    usuario = input("Ingresa tu nombre de usuario: ")
+    contrasena = input("Ingresa tu contraseña: ")
+
+    # Verificar credenciales del usuario gestor
+    if verificar_credenciales_gestor(usuario, contrasena):
+        # Mostrar sugerencias almacenadas en el archivo CSV
+        with open("EJERCICIO 2/sugerencias.csv", mode="r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                print(f"Sugerencia de {row[0]} para el documento {row[1]}: {row[2]}")
+
+        # Tomar decisiones sobre las sugerencias (modificar documentos)
+        decision = input("¿Quieres aplicar las sugerencias? (si/no): ").lower()
+        if decision == "si":
+            # Implementar lógica para aplicar sugerencias
+            print("Sugerencias aplicadas correctamente.")
+        else:
+            print("No se aplicaron sugerencias.")
     else:
-        print("No se aplicaron sugerencias.")
-
+        print("Credenciales incorrectas. No puedes gestionar sugerencias.")
 if __name__ == "__main__":
     print("Bienvenido al gestor de documentos del Real Madrid.")
 
@@ -265,7 +294,23 @@ if __name__ == "__main__":
                 break
 
     elif tipo_usuario == "gestor":
-        gestionar_sugerencias()
+     
+     opcion_registro = input("¿Quieres registrar un nuevo usuario gestor? (si/no): ").lower()
+     
+     if opcion_registro == "si":
+        registrar_usuario_gestor()
+     
+     else:
+        # Pedir credenciales del gestor
+        usuario_gestor = input("Ingresa tu nombre de usuario gestor: ")
+        contrasena_gestor = input("Ingresa tu contraseña gestor: ")
 
-    else:
-        print("Opción no válida. Inténtelo de nuevo.")
+        # Verificar credenciales del gestor
+        if verificar_credenciales_gestor(usuario_gestor, contrasena_gestor):
+            print("Credenciales correctas. Puedes gestionar sugerencias.")
+            gestionar_sugerencias()
+        else:
+            print("Credenciales incorrectas. No puedes gestionar sugerencias.")
+else:
+    print("Opción no válida. Inténtelo de nuevo.")
+    print("Gracias por usar el gestor de documentos del Real Madrid.")
