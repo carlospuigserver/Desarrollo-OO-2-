@@ -20,6 +20,7 @@ class Documento:
             print("Documento modificado exitosamente.")
         else:
             print("No se puede modificar este tipo de documento.")
+    
 
 # Función para acceder a un documento
 def acceder_documento(documentos, usuario):
