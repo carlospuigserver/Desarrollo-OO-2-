@@ -1,21 +1,52 @@
+import sqlite3
 from abc import ABC, abstractmethod
 from datetime import datetime
+import random
 
 # Clase Usuario
 class Usuario:
     def __init__(self, nombre):
         self.nombre = nombre
 
-# Clase ListaBlanca (LogIn)
-class ListaBlanca:
-    def __init__(self):
-        self.usuarios = []
+# Clase ListaBlanca (LogIn) con SQLite
+class ListaBlancaSQLite:
+    def __init__(self, db_path="lista_blanca.sql"):
+        self.db_path = db_path
+        self._create_table()
 
-    def agregar_usuario(self, usuario):
-        self.usuarios.append(usuario)
+    def _create_table(self):
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id INTEGER PRIMARY KEY,
+                nombre TEXT UNIQUE,
+                estado TEXT
+            )
+        ''')
+        connection.commit()
+        connection.close()
+
+    def agregar_usuarios_aleatorios(self, cantidad):
+        for _ in range(cantidad):
+            nombre = f"Usuario{random.randint(1, 100)}"
+            estado = random.choice(["Aprobado", "Denegado"])
+            self._agregar_usuario(nombre, estado)
+
+    def _agregar_usuario(self, nombre, estado):
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
+        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, estado) VALUES (?, ?)', (nombre, estado))
+        connection.commit()
+        connection.close()
 
     def esta_en_lista_blanca(self, usuario):
-        return usuario in self.usuarios
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
+        cursor.execute('SELECT estado FROM usuarios WHERE nombre = ?', (usuario.nombre,))
+        result = cursor.fetchone()
+        connection.close()
+        return result == ("Aprobado",)
 
 # Clase Subject (ABC)
 class Subject(ABC):
@@ -101,32 +132,39 @@ class Proxy(Subject):
         else:
             print(f"Acceso denegado a {usuario.nombre}. No está en la lista blanca.")
 
-# Código de prueba
-if __name__ == "__main__":
-    usuario1 = Usuario("Usuario1")
-    usuario2 = Usuario("Usuario2")
 
-    lista_blanca = ListaBlanca()
-    lista_blanca.agregar_usuario(usuario1)
+if __name__ == "__main__":
+    lista_blanca_sqlite = ListaBlancaSQLite()
+
+    # Agregar usuarios aleatorios a la lista blanca o denegados
+    lista_blanca_sqlite.agregar_usuarios_aleatorios(5)
 
     documento = RealSubjectDocumento("Documento1")
-    proxy_documento = Proxy(documento, lista_blanca)
+    proxy_documento = Proxy(documento, lista_blanca_sqlite)
 
     enlace = RealSubjectEnlace("Enlace1", "Documento1", "/ruta/ejemplo")
-    proxy_enlace = Proxy(enlace, lista_blanca)
+    proxy_enlace = Proxy(enlace, lista_blanca_sqlite)
 
     carpeta = RealSubjectCarpeta("Carpeta1", [documento, enlace])
-    proxy_carpeta = Proxy(carpeta, lista_blanca)
+    proxy_carpeta = Proxy(carpeta, lista_blanca_sqlite)
 
-    print("Acceso a través del Proxy:")
-    print("Documento:")
-    proxy_documento.request(usuario1)
-    proxy_documento.request(usuario2)  # Intento de acceso por Usuario2
+    print("Acceso a través del Proxy con SQLite:")
+    
+    # Obtener usuarios de la base de datos y verificar acceso
+    connection = sqlite3.connect(lista_blanca_sqlite.db_path)
+    cursor = connection.cursor()
+    cursor.execute('SELECT nombre, estado FROM usuarios')
+    usuarios_bd = cursor.fetchall()
+    connection.close()
 
-    print("\nEnlace:")
-    proxy_enlace.request(usuario1)
-    proxy_enlace.request(usuario2)  # Intento de acceso por Usuario2
+    for usuario_nombre, usuario_estado in usuarios_bd:
+        usuario = Usuario(usuario_nombre)
+        
+        print(f"\nDocumento para {usuario.nombre}:")
+        proxy_documento.request(usuario)
 
-    print("\nCarpeta:")
-    proxy_carpeta.request(usuario1)
-    proxy_carpeta.request(usuario2)  # Intento de acceso por Usuario2
+        print(f"\nEnlace para {usuario.nombre}:")
+        proxy_enlace.request(usuario)
+
+        print(f"\nCarpeta para {usuario.nombre}:")
+        proxy_carpeta.request(usuario)
