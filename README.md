@@ -1451,3 +1451,8 @@ Se utiliza SQLite para almacenar y gestionar la lista blanca de usuarios de mane
 En resumen, el código muestra cómo implementar un Proxy para controlar el acceso a documentos, enlaces y carpetas, y utiliza SQLite para gestionar dinámicamente una lista blanca de usuarios. Esto proporciona una capa adicional de seguridad al verificar el acceso a través del Proxy
 
 
+### El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
+uml proxy: https://www.plantuml.com/plantuml/png/nPFFJiCm3CRlVOeSEy5UeE8myUUs0p1nZjp46q5fCXnd0W7lpj8sGuLsx8AujR7z-VivpY8m4CV65if22E8XH23ZnLiXn9dpJKrOYS1atARuAFgafGaCbnQSWjNTqZ2swNDTootmuo5V2Aa8WL4or1RBMTA43U46ICQkKP1W4TYdprA1OwD1Ly8uJjdoMtOvT7GkC31ed__R1kb8efFMf8-wTLdszLNccrMYzjuc9AW34oWM7Tigra-ek1i0uNF4m6FbEs_qrqJk4MnVUUrLRD2nxuOYXvRRepsJ2KnxlMJob4QfQeTaraO1IL0AWv-2IdgDJr0aZLlxyfZR6sT1uRHLZO6DyqFxaM4ay7yGLq1RP3X2aUya_Dt8GUloqASQtOWi_IlRBVcNrnw74AmCdLALrpD51XjU_NoK9ovmVl7p-OX4VWqNx_lm6D94HbwigN2-ia6ymouMw7Hix2S0
+
+
+![capt proxy](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/08a7e743-9490-474c-af67-615c5296c693)
