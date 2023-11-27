@@ -1393,3 +1393,61 @@ En resumen, este código demuestra la implementación del patrón Composite, per
 ### El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
 uml composite: https://www.plantuml.com/plantuml/png/jL91IWGn4Bpd5Jcko7nWK5bGRuiV497UfCL0qXsI7Y_hFiet-35d9enXmpWtZrLTT5KglSy2IORW5Hop932YZOUSzJs7o8Ga-gIqFYtJixwEa92ahuhL-UtV0ewOG1pJxghN8wlEIXNJ0yBRxBUkgS6o4vo5dNbttYQaNXzSbkTVpxjf2rYxCuMvI3pkV6B2IP8my0TkgxRYFB0P0f9mYKCSZWcBPeJY8bS00Rw_Hkn89coO1CdPgaY3G06Rde_amU2geSKiZYutlZRaLhcG8WgihrvUcjkkN_wzwtgDDvzTDzz9mzMxQ0RrXzf1gR5XbmhK7iaEmVy0
 
+
+<img width="901" alt="CAPTUML" src="https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/c825958e-6015-4867-af81-10df767a6ac5">
+
+
+
+## Proxy: 
+
+
+![codeproxy](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/745a34d4-767d-454e-afbf-2c25d6139086)
+
+
+
+El código implementa un ejemplo de patrón Proxy junto con el uso de SQLite para gestionar una lista blanca de usuarios. A continuación, se explica detalladamente cómo funciona el código:
+
+### Clases y Estructura de Datos:
+
+#### Usuario: 
+Representa un usuario con un nombre.
+
+#### ListaBlancaSQLite: 
+Gestiona la lista blanca de usuarios utilizando una base de datos SQLite. La base de datos contiene una tabla llamada usuarios con columnas id, nombre y estado. Tiene métodos para crear la tabla, agregar usuarios aleatorios y verificar si un usuario está en la lista blanca.
+
+### Clases del Patrón Proxy:
+
+#### Subject (Clase Abstracta): 
+Define la interfaz común para los objetos reales y proxy. En este caso, representa el acceso a documentos, enlaces y carpetas.
+
+#### RealSubjectDocumento, RealSubjectEnlace, RealSubjectCarpeta: 
+Son las implementaciones reales de Subject. Cada uno de ellos tiene un método request que verifica el acceso del usuario antes de mostrar la información.
+
+#### Proxy: 
+Actúa como un intermediario para acceder a los objetos reales (RealSubject). Antes de permitir el acceso, verifica si el usuario está en la lista blanca.
+
+
+### Lógica Principal:
+
+Lógica Principal en if __name__ == "__main__"::
+Se crea una instancia de ListaBlancaSQLite y se le agregan usuarios aleatorios a la lista blanca o denegada.
+
+Se crean instancias de RealSubjectDocumento, RealSubjectEnlace, y RealSubjectCarpeta, y se crean sus respectivos proxies.
+
+Se obtienen los usuarios de la base de datos y se verifica el acceso a través de los proxies para cada usuario.
+
+
+### Ejecución del Proxy con SQLite:
+
+#### Acceso a través del Proxy con SQLite:
+Se muestra información sobre documentos, enlaces y carpetas para cada usuario.
+El proxy verifica si cada usuario está en la lista blanca antes de permitir el acceso. Si no está en la lista blanca, se muestra un mensaje de acceso denegado.
+
+
+### Uso de SQLite:
+#### Uso de SQLite para la Lista Blanca:
+Se utiliza SQLite para almacenar y gestionar la lista blanca de usuarios de manera persistente. La base de datos se crea si no existe y se agregan usuarios aleatorios.
+
+En resumen, el código muestra cómo implementar un Proxy para controlar el acceso a documentos, enlaces y carpetas, y utiliza SQLite para gestionar dinámicamente una lista blanca de usuarios. Esto proporciona una capa adicional de seguridad al verificar el acceso a través del Proxy
+
+
