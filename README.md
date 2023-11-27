@@ -1361,3 +1361,35 @@ Se utiliza el método mostrar_info de la carpeta para imprimir información deta
 
 En resumen, el código de carpetas.py modela documentos y carpetas, teniendo en cuenta el tamaño total de la carpeta, incluyendo documentos y enlaces. Este enfoque permite representar jerarquías complejas de documentos y proporcionar información detallada sobre el contenido y la estructura de una carpeta.
                 
+
+
+
+## Composite.py:
+
+![codecomp](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/bbf9a2b4-6fc9-4467-a532-52ce687732bf)
+
+
+El código  implementa un patrón de diseño estructural "Composite". A continuación, se explica en detalle:
+
+Clase Abstracta Component:
+La clase Component es una clase abstracta que define la interfaz común para todos los elementos en la estructura compuesta. Cada componente tiene un enlace al componente padre (si lo tiene), métodos para agregar y quitar componentes, y un método abstracto operation que debe ser implementado por las subclases concretas.
+
+Clases Concretas Documento, Enlace y Carpeta:
+Documento: Representa un documento simple con atributos como nombre, tipo, tamaño, contenido y ruta. Implementa el método operation para proporcionar una representación en forma de cadena del documento.
+
+Enlace: Representa un enlace que puede apuntar a otro documento. Implementa métodos add y remove, aunque en este caso imprime mensajes indicando que no se pueden agregar ni quitar componentes de un enlace. También implementa el método operation para proporcionar una representación en forma de cadena del enlace.
+
+Carpeta: Representa una carpeta que puede contener documentos o enlaces. Implementa los métodos add, remove y is_composite. El método is_composite devuelve True para indicar que es una carpeta y puede contener más elementos. El método operation devuelve una representación en forma de cadena de la carpeta y sus contenidos.
+
+Función client_code:
+La función client_code toma un componente como parámetro y muestra su información llamando al método mostrar_info.
+
+Lógica Principal:
+En el bloque if __name__ == "__main__":, se crean instancias de Documento, Enlace y Carpeta, y se utiliza un bucle para interactuar con el usuario. El usuario puede elegir ver la información de un documento, un enlace, una carpeta o salir del programa.
+
+En resumen, este código demuestra la implementación del patrón Composite, permitiendo la creación de estructuras jerárquicas de documentos y carpetas, donde una carpeta puede contener documentos o enlaces, y se puede acceder a la información de manera consistente a través de la interfaz común Component.
+
+
+### El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
+uml composite: https://www.plantuml.com/plantuml/png/jL91IWGn4Bpd5Jcko7nWK5bGRuiV497UfCL0qXsI7Y_hFiet-35d9enXmpWtZrLTT5KglSy2IORW5Hop932YZOUSzJs7o8Ga-gIqFYtJixwEa92ahuhL-UtV0ewOG1pJxghN8wlEIXNJ0yBRxBUkgS6o4vo5dNbttYQaNXzSbkTVpxjf2rYxCuMvI3pkV6B2IP8my0TkgxRYFB0P0f9mYKCSZWcBPeJY8bS00Rw_Hkn89coO1CdPgaY3G06Rde_amU2geSKiZYutlZRaLhcG8WgihrvUcjkkN_wzwtgDDvzTDzz9mzMxQ0RrXzf1gR5XbmhK7iaEmVy0
+
