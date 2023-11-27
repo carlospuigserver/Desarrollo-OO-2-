@@ -1268,15 +1268,96 @@ elif opcion_menu == "2":
                 
                     
                 
+
+
+# EJERCICIO 2
+
+## Contexto:
+El SAMUR-Protección Civil, tras su proceso de digitalización, se enfrenta al reto de administrar una cantidad masiva de documentos digitales relacionados con sus activaciones y operaciones. Esta documentación no solo consiste en informes y registros, sino que también incluye imágenes, vídeos, audios y otros tipos de archivos multimedia. La necesidad de garantizar un acceso rápido pero seguro a esta información es esencial, especialmente cuando se trata de datos sensibles o confidenciales.
+
+
+## Enunciado del problema:
+
+(1)Documentos: Estos son los archivos básicos en el sistema. Cada documento tiene un nombre, un tipo (texto, imagen, video, etc.) y un tamaño. El contenido de estos documentos puede ser accedido y modificado, pero para algunos documentos sensibles, es necesario llevar un registro de quién y cuándo se accede o modifica.
+
+(2)Enlaces (Links): Son referencias a otros documentos o carpetas en el sistema. No poseen contenido propio, pero ofrecen una forma rápida de acceder a la información referenciada. Su tamaño es simbólico, no correspondiente al tamaño real del archivo o carpeta al que apuntan.
+
+(3)Carpetas: Contenedores que albergan varios documentos, enlaces y otras carpetas. Su tamaño es la suma de los tamaños de todos los elementos contenidos. Se pueden expandir añadiendo más elementos en cualquier momento.
+
+(4)Proxy de Acceso: Para garantizar la seguridad y la trazabilidad en el acceso a los documentos, se implementará un proxy que actuará como intermediario. Este proxy registrará cada acceso o modificación a los documentos, especialmente aquellos que sean sensibles o confidenciales, y solo permitirá el acceso a usuarios autorizados.
+
+
+## Objetivos:
+(1)Utilizar el patrón de diseño Composite para modelar la estructura de documentos del sistema.
+(2)Implementar el patrón Proxy para controlar y registrar el acceso a documentos específicos.
+(3)Desarrollar en Python las clases y la lógica necesaria para representar y gestionar los documentos, enlaces y carpetas, garantizando la seguridad y trazabilidad mediante el uso del proxy.
+(4)Implementar funciones que faciliten la navegación, creación, modificación y eliminación de elementos en el sistema.
+
+
+
                 
-                
-                
-                
-                
-                
-                
+## Cerpeta Composite
+
+Dentro de esta carpeta, está uno de los puntos importantes del ejercicio, que es aplicar el Patrón Composite, ya usado en el Ejercicio 1, para modelar la estructura de documentos del sistema. Para ello, con el objetivo de una mejor comprensión, he dejado 3 archivos dentro de la carpeta, documentos.py, enlace.py y carpeta.py, simplem,ente para entender mejor que hacen cada uno individualmente, y luego está el archivo composite.py, donde ya sabiendo que hace cada clase , es mucho más fácil de entender, a continuación, se adjuntarán los códigos y una explicación un poco más amplia de cada uno de ellos.
+
+
+### documentos.py:
+
+
+  ![codedoc](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/0b36e28b-8d96-4f6e-940e-5e62eed48fa6)
+          
+
+El código define una clase llamada Documento en el archivo documento.py. La clase Documento representa un documento con atributos como nombre, tipo, tamaño, contenido y ruta. La idea principal es encapsular estos atributos y proporcionar métodos para acceder y modificar estos valores de manera controlada.
+
+El constructor __init__ se utiliza para inicializar un objeto Documento con los atributos proporcionados (nombre, tipo, tamaño, contenido y ruta).
+A continuación, se definen propiedades y métodos de configuración (@property y @nombre.setter, @tipo.setter, etc.) para cada atributo del documento. Estos métodos permiten acceder y modificar los atributos de la clase de manera segura, aplicando algunas validaciones simples para asegurarse de que los valores sean del tipo correcto.
+
+La función mostrar_info imprime información formateada sobre el documento, incluyendo nombre, tipo, tamaño, contenido y ruta.
+Finalmente, se presenta un ejemplo de uso de la clase Documento. Se crea un objeto documento_ejemplo con valores específicos y se imprime la información del documento utilizando el método mostrar_info().
+En resumen, este código implementa una clase Documento que encapsula la información relacionada con un documento y proporciona métodos para acceder y modificar sus atributos de manera segura. El ejemplo al final del código muestra cómo crear un objeto Documento y visualizar su información.
                 
                 
 
+### enlace.py:
 
+
+![code-en](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/f0701edf-eb73-4f9d-aebf-35f9034cdf1e)
+
+
+El código en el archivo enlace.py define una clase llamada Enlace que modela un enlace entre documentos. A continuación, se proporciona una explicación detallada:
+
+La clase Enlace tiene tres atributos privados: _nombre, _destino, y _ruta_destino. El atributo _nombre representa el nombre del enlace, _destino representa el documento al que apunta el enlace, y _ruta_destino representa la ruta específica al destino. Estos atributos son inicializados en el método __init__ cuando se crea un objeto de la clase.
+
+Para cada uno de estos atributos, la clase implementa propiedades (@property) que permiten obtener sus valores y métodos setter (@nombre.setter, @destino.setter, @ruta_destino.setter) que validan y asignan nuevos valores. La validación se realiza para garantizar que los valores cumplan con ciertos requisitos; por ejemplo, que el nombre del enlace sea una cadena de texto.
+
+El método mostrar_info de la clase Enlace es responsable de generar una representación en forma de cadena del enlace. Toma un diccionario de documentos como argumento, y si la ruta de destino _ruta_destino coincide con la ruta de un documento en el diccionario, muestra la información detallada del documento. En caso contrario, simplemente muestra información básica sobre el enlace, incluyendo el nombre del enlace y el destino.
+
+El código también incluye un ejemplo de uso al final. Se crea una instancia de la clase Documento para representar un documento de ejemplo, y luego se crea un objeto Enlace que apunta a ese documento. Posteriormente, se solicita al usuario que ingrese la ruta de destino para el enlace y se muestra la información del enlace utilizando el método mostrar_info.
+
+En resumen, enlace.py encapsula la lógica para modelar y trabajar con enlaces entre documentos, proporcionando métodos para obtener y establecer propiedades, así como para mostrar información detallada del enlace en función de la existencia y coincidencia con documentos en un diccionario.
+
+
+
+## carpetas.py
+
+
+
+![codecarp](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/cd6554bb-8459-44f2-a36a-2a5a4c11c8b1)
+
+
+
+
+Clase Carpeta:
+La clase Carpeta representa una carpeta que contiene documentos, incluidos posiblemente enlaces a otros documentos. Tiene atributos como nombre y una lista de documentos (_documentos). La propiedad documentos y su método setter permiten acceder y modificar la lista de documentos. El método agregar_documento añade un documento a la carpeta.
+
+El método tamaño_total calcula el tamaño total de todos los documentos dentro de la carpeta, incluyendo documentos vinculados a través de enlaces.
+
+El método mostrar_info proporciona una representación en forma de cadena de la carpeta, incluyendo su nombre, información detallada de cada documento y el tamaño total de la carpeta, teniendo en cuenta tanto documentos como enlaces.
+
+Ejemplo de Uso:
+Se crean dos objetos de la clase Documento (documento_ejemplo y documento_ejemplo2) y un objeto de la clase Carpeta (carpeta_ejemplo) que contiene estos documentos.
+
+Se utiliza el método mostrar_info de la carpeta para imprimir información detallada sobre la carpeta, incluyendo el nombre, la información de cada documento y el tamaño total de la carpeta, considerando tanto documentos como enlaces.
+
+En resumen, el código de carpetas.py modela documentos y carpetas, teniendo en cuenta el tamaño total de la carpeta, incluyendo documentos y enlaces. Este enfoque permite representar jerarquías complejas de documentos y proporcionar información detallada sobre el contenido y la estructura de una carpeta.
                 
