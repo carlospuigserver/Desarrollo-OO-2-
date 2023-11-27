@@ -10,7 +10,7 @@ class Usuario:
 
 # Clase ListaBlanca (LogIn) con SQLite
 class ListaBlancaSQLite:
-    def __init__(self, db_path="lista_blanca.db"):
+    def __init__(self, db_path="lista_blanca.sql"):
         self.db_path = db_path
         self._create_table()
 
