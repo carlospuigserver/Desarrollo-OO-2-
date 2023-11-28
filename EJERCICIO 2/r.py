@@ -40,7 +40,8 @@ class ListaBlancaSQLite:
     def _agregar_usuario(self, nombre, contrasena, estado):
         connection = sqlite3.connect(self.db_path)
         cursor = connection.cursor()
-        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, contrasena, estado) VALUES (?, ?, ?)', (nombre, contrasena, estado))
+        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, contrasena, estado, accion) VALUES (?, ?, ?, ?)',
+                       (nombre, contrasena, estado, ''))
         connection.commit()
         connection.close()
 
@@ -52,10 +53,17 @@ class ListaBlancaSQLite:
         connection.close()
         return result and result[1] == "Aprobado" and result[0] == usuario.contrasena
 
+    def registrar_accion(self, usuario, accion):
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
+        cursor.execute('UPDATE usuarios SET accion = ? WHERE nombre = ?', (accion, usuario.nombre))
+        connection.commit()
+        connection.close()
+
 # Clase Subject (ABC)
 class Subject(ABC):
     @abstractmethod
-    def request(self, usuario, accion) -> None:
+    def request(self, usuario) -> None:
         pass
 
 # Clase RealSubject Documento
@@ -64,21 +72,21 @@ class RealSubjectDocumento(Subject):
         self._nombre = nombre
         self._registro = []
 
-    def request(self, usuario, accion) -> None:
+    def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
-            self._realizar_accion(accion)
+            self._registro.append(f"Acceso al documento {self._nombre} registrado en {datetime.now()}")
             self.mostrar_info()
+            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            accion_elegida = random.choice(acciones_posibles)
+            lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} el documento {self._nombre}.')
 
     def _verificar_acceso(self, usuario) -> bool:
         print(f"Proxy: Verificando acceso de {usuario.nombre} al documento {self._nombre}.")
         return True  # Implementa tu lógica de verificación de lista blanca aquí
 
-    def _realizar_accion(self, accion) -> None:
-        self._registro.append(f"{usuario.nombre} ha {accion} el documento {self._nombre} en {datetime.now()}")
-
     def mostrar_info(self):
         print(f"Información del Documento {self._nombre}:")
-        print("Nombre: Documento1")
+        print("Nombre:", self._nombre)
         print("Tipo: Texto")
         print("Tamaño: 1024")
         print("Contenido: Contenido de ejemplo")
@@ -91,21 +99,20 @@ class RealSubjectEnlace(Subject):
         self._destino = destino
         self._ruta_destino = ruta_destino
 
-    def request(self, usuario, accion) -> None:
+    def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
-            self._realizar_accion(accion)
             self.mostrar_info()
+            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            accion_elegida = random.choice(acciones_posibles)
+            lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} el enlace {self._nombre}.')
 
     def _verificar_acceso(self, usuario) -> bool:
         print(f"Proxy: Verificando acceso de {usuario.nombre} al enlace {self._nombre}.")
         return True  # Implementa tu lógica de verificación de lista blanca aquí
 
-    def _realizar_accion(self, accion) -> None:
-        print(f"{usuario.nombre} ha {accion} el enlace {self._nombre} en {datetime.now()}")
-
     def mostrar_info(self):
         print(f"Información del Enlace {self._nombre}:")
-        print(f"Nombre: Enlace1")
+        print(f"Nombre: {self._nombre}")
         print(f"Destino: {self._destino}")
         print(f"Ruta Destino: {self._ruta_destino}")
 
@@ -114,19 +121,17 @@ class RealSubjectCarpeta(Subject):
     def __init__(self, nombre, documentos=None):
         self._nombre = nombre
         self._documentos = documentos or []
-        self._registro = []
 
-    def request(self, usuario, accion) -> None:
+    def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
-            self._realizar_accion(accion)
             self.mostrar_info()
+            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            accion_elegida = random.choice(acciones_posibles)
+            lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} la carpeta {self._nombre}.')
 
     def _verificar_acceso(self, usuario) -> bool:
         print(f"Proxy: Verificando acceso de {usuario.nombre} a la carpeta {self._nombre}.")
         return True  # Implementa tu lógica de verificación de lista blanca aquí
-
-    def _realizar_accion(self, accion) -> None:
-        self._registro.append(f"{usuario.nombre} ha {accion} la carpeta {self._nombre} en {datetime.now()}")
 
     def add(self, documento) -> None:
         self._documentos.append(documento)
@@ -135,9 +140,6 @@ class RealSubjectCarpeta(Subject):
         print(f"Información de la Carpeta {self._nombre}:")
         for documento in self._documentos:
             documento.mostrar_info()
-        print(f"Registro de Acciones en la Carpeta {self._nombre}:")
-        for registro in self._registro:
-            print(registro)
 
 # Clase Proxy
 class Proxy(Subject):
@@ -147,26 +149,9 @@ class Proxy(Subject):
 
     def request(self, usuario) -> None:
         if self._lista_blanca.esta_en_lista_blanca(usuario):
-            acciones = ["accedido", "modificado", "eliminado", "creado"]
-            accion = random.choice(acciones)
-
-            # Mover la acción denegada aquí para evitar errores
-            connection = sqlite3.connect(self._lista_blanca.db_path)
-            cursor = connection.cursor()
-            cursor.execute('UPDATE usuarios SET accion = ? WHERE nombre = ?', (accion, usuario.nombre))
-            connection.commit()
-            connection.close()
-
-            self._real_subject.request(usuario, accion)
+            self._real_subject.request(usuario)
         else:
             print(f"Acceso denegado a {usuario.nombre}. No está en la lista blanca.")
-            # Añadir acción denegada en la base de datos
-            connection = sqlite3.connect(self._lista_blanca.db_path)
-            cursor = connection.cursor()
-            cursor.execute('UPDATE usuarios SET accion = ? WHERE nombre = ?', ("Acceso denegado", usuario.nombre))
-            connection.commit()
-            connection.close()
-
 
 if __name__ == "__main__":
     lista_blanca_sqlite = ListaBlancaSQLite()
@@ -183,49 +168,23 @@ if __name__ == "__main__":
 
     usuarios = [Usuario(nombre, contrasena) for nombre, contrasena, _ in usuarios_bd]
 
-    documento1 = RealSubjectDocumento("Documento1")
-    documento2 = RealSubjectDocumento("Documento2")
-    documento3 = RealSubjectDocumento("Documento3")
+    documento = RealSubjectDocumento(f"Documento{random.randint(1, 100)}")
+    proxy_documento = Proxy(documento, lista_blanca_sqlite)
 
-    enlace1 = RealSubjectEnlace("Enlace1", "Documento1", "/ruta/ejemplo1")
-    enlace2 = RealSubjectEnlace("Enlace2", "Documento2", "/ruta/ejemplo2")
-    enlace3 = RealSubjectEnlace("Enlace3", "Documento3", "/ruta/ejemplo3")
+    enlace = RealSubjectEnlace(f"Enlace{random.randint(1, 100)}", f"Documento{random.randint(1, 100)}", f"/ruta/ejemplo{random.randint(1, 100)}")
+    proxy_enlace = Proxy(enlace, lista_blanca_sqlite)
 
-    carpeta1 = RealSubjectCarpeta("Carpeta1", [documento1, enlace1])
-    carpeta2 = RealSubjectCarpeta("Carpeta2", [documento2, enlace2])
-    carpeta3 = RealSubjectCarpeta("Carpeta3", [documento3, enlace3])
-
-    proxy_documento1 = Proxy(documento1, lista_blanca_sqlite)
-    proxy_documento2 = Proxy(documento2, lista_blanca_sqlite)
-    proxy_documento3 = Proxy(documento3, lista_blanca_sqlite)
-
-    proxy_enlace1 = Proxy(enlace1, lista_blanca_sqlite)
-    proxy_enlace2 = Proxy(enlace2, lista_blanca_sqlite)
-    proxy_enlace3 = Proxy(enlace3, lista_blanca_sqlite)
-
-    proxy_carpeta1 = Proxy(carpeta1, lista_blanca_sqlite)
-    proxy_carpeta2 = Proxy(carpeta2, lista_blanca_sqlite)
-    proxy_carpeta3 = Proxy(carpeta3, lista_blanca_sqlite)
+    carpeta = RealSubjectCarpeta(f"Carpeta{random.randint(1, 100)}", [documento, enlace])
+    proxy_carpeta = Proxy(carpeta, lista_blanca_sqlite)
 
     print("Acceso a través del Proxy con SQLite:")
-
+    
     for usuario in usuarios:
         print(f"\nDocumento para {usuario.nombre}:")
-        proxy_documento1.request(usuario)
+        proxy_documento.request(usuario)
 
         print(f"\nEnlace para {usuario.nombre}:")
-        proxy_enlace1.request(usuario)
+        proxy_enlace.request(usuario)
 
         print(f"\nCarpeta para {usuario.nombre}:")
-        proxy_carpeta1.request(usuario)
-
-        # Simular otras acciones con otros documentos, enlaces y carpetas
-        # basándonos en la longitud del nombre del usuario para mayor variabilidad
-        if len(usuario.nombre) % 2 == 0:
-            proxy_documento2.request(usuario)
-            proxy_enlace2.request(usuario)
-            proxy_carpeta2.request(usuario)
-        else:
-            proxy_documento3.request(usuario)
-            proxy_enlace3.request(usuario)
-            proxy_carpeta3.request(usuario)
+        proxy_carpeta.request(usuario)
