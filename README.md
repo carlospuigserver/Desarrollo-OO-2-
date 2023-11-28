@@ -1401,58 +1401,40 @@ uml composite: https://www.plantuml.com/plantuml/png/jL91IWGn4Bpd5Jcko7nWK5bGRui
 ## Proxy: 
 
 
-![codeproxy](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/745a34d4-767d-454e-afbf-2c25d6139086)
+![codePRE](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/e9faea53-e2fa-4334-8444-fa403a9eeb38)
+
+
+### Clase Usuario:
+La clase Usuario representa a un usuario con un nombre y una contraseña.
+
+### Clase ListaBlancaSQLite:
+Esta clase gestiona la lista blanca de usuarios utilizando una base de datos SQLite. Permite agregar usuarios aleatorios con contraseñas y estados (Aprobado o Denegado), verificar si un usuario está en la lista blanca y registrar acciones realizadas por los usuarios.
+
+#### Clases Subject (ABC), RealSubjectDocumento, RealSubjectEnlace, RealSubjectCarpeta:
+Subject: Es una clase abstracta que define la interfaz para el Proxy y el Sujeto Real.
+RealSubjectDocumento, RealSubjectEnlace, RealSubjectCarpeta: Son implementaciones concretas de Subject que representan objetos reales (documento, enlace, carpeta). Cada uno tiene un método request que realiza operaciones específicas cuando se accede al objeto.
+
+### Clase Proxy:
+La clase Proxy actúa como un intermediario entre el cliente y el objeto real (RealSubject). Antes de permitir el acceso al objeto real, verifica si el usuario está en la lista blanca utilizando la clase ListaBlancaSQLite.
+
+### Función Principal (if name == "main"):
+Se crea una instancia de ListaBlancaSQLite.
+Se agregan usuarios aleatorios a la lista blanca o se les deniega el acceso.
+Se crean objetos Usuario con contraseñas a partir de la base de datos SQLite.
+Se generan objetos aleatorios (documentos, enlaces y carpetas) con información aleatoria.
+Se crean proxies para los objetos mencionados.
+Se realiza un bucle sobre los usuarios aprobados, y para cada usuario, se realizan acciones aleatorias sobre objetos seleccionados aleatoriamente a través de proxies.
+
+En resumen, este código simula un sistema básico de control de acceso utilizando un patrón de diseño Proxy, una lista blanca en una base de datos SQLite y objetos que representan documentos, enlaces y carpetas. Los usuarios aprobados realizan acciones aleatorias en estos objetos a través de proxies.
+
+
+## El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
+
+### Link UML: 
+https://www.plantuml.com/plantuml/png/nLHDRnCn4BtdL_YuYAO_O5MXYezR3q34sPgr9ukHCrF6ume4_7Tml0xPPDFsWZZ5cV5xVc_U9BT9GJJluif5ICbyIXaaiFcnCkObyMuGxCr69T1OAev91H8I7Ag_LXFqBYI5rn78mUR3NL3SawpzOEz1Fn-pM2S8YbPXYDYzwCq31ryQC0gE83PN5Sb2H50knyu1QV3WUnD8Zp3s1DJDLL-PkUPQmwJWkNq_PXkHK43iNzH117IHQGoQcuOZIuNG8jaOoc7OJw6R5FLjgdyG0tD4e08H74FIyXOu5vZEhb-PsZYHMIOUI56suD1iyl05dTR01BzcJBhqS4FMh3uYn0dvbbtU8IdNkEn9wAKqAUL-d_5DxRnwpeC5_O0Iji5LdvZuYR7ik0ubq9QxnuI_emWEBwlsc3GGpvraXTF6__Rn1kGU5HunqX9AKm1BwVshEC3xxY2WNroSnlwawVV2txvFFWKXsbIP-hR5fJFx2VNd_ohFtFEfOjRh1OgpIhdMD4oVvkRdzVMYtuitwaPUQhUWP_qwazKjai-x-1i0
 
 
 
-El código implementa un ejemplo de patrón Proxy junto con el uso de SQLite para gestionar una lista blanca de usuarios. A continuación, se explica detalladamente cómo funciona el código:
+### Foto UML: 
 
-### Clases y Estructura de Datos:
-
-#### Usuario: 
-Representa un usuario con un nombre.
-
-#### ListaBlancaSQLite: 
-Gestiona la lista blanca de usuarios utilizando una base de datos SQLite. La base de datos contiene una tabla llamada usuarios con columnas id, nombre y estado. Tiene métodos para crear la tabla, agregar usuarios aleatorios y verificar si un usuario está en la lista blanca.
-
-### Clases del Patrón Proxy:
-
-#### Subject (Clase Abstracta): 
-Define la interfaz común para los objetos reales y proxy. En este caso, representa el acceso a documentos, enlaces y carpetas.
-
-#### RealSubjectDocumento, RealSubjectEnlace, RealSubjectCarpeta: 
-Son las implementaciones reales de Subject. Cada uno de ellos tiene un método request que verifica el acceso del usuario antes de mostrar la información.
-
-#### Proxy: 
-Actúa como un intermediario para acceder a los objetos reales (RealSubject). Antes de permitir el acceso, verifica si el usuario está en la lista blanca.
-
-
-### Lógica Principal:
-
-Lógica Principal en if __name__ == "__main__"::
-Se crea una instancia de ListaBlancaSQLite y se le agregan usuarios aleatorios a la lista blanca o denegada.
-
-Se crean instancias de RealSubjectDocumento, RealSubjectEnlace, y RealSubjectCarpeta, y se crean sus respectivos proxies.
-
-Se obtienen los usuarios de la base de datos y se verifica el acceso a través de los proxies para cada usuario.
-
-
-### Ejecución del Proxy con SQLite:
-
-#### Acceso a través del Proxy con SQLite:
-Se muestra información sobre documentos, enlaces y carpetas para cada usuario.
-El proxy verifica si cada usuario está en la lista blanca antes de permitir el acceso. Si no está en la lista blanca, se muestra un mensaje de acceso denegado.
-
-
-### Uso de SQLite:
-#### Uso de SQLite para la Lista Blanca:
-Se utiliza SQLite para almacenar y gestionar la lista blanca de usuarios de manera persistente. La base de datos se crea si no existe y se agregan usuarios aleatorios.
-
-En resumen, el código muestra cómo implementar un Proxy para controlar el acceso a documentos, enlaces y carpetas, y utiliza SQLite para gestionar dinámicamente una lista blanca de usuarios. Esto proporciona una capa adicional de seguridad al verificar el acceso a través del Proxy
-
-
-### El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
-uml proxy: https://www.plantuml.com/plantuml/png/nPFFJiCm3CRlVOeSEy5UeE8myUUs0p1nZjp46q5fCXnd0W7lpj8sGuLsx8AujR7z-VivpY8m4CV65if22E8XH23ZnLiXn9dpJKrOYS1atARuAFgafGaCbnQSWjNTqZ2swNDTootmuo5V2Aa8WL4or1RBMTA43U46ICQkKP1W4TYdprA1OwD1Ly8uJjdoMtOvT7GkC31ed__R1kb8efFMf8-wTLdszLNccrMYzjuc9AW34oWM7Tigra-ek1i0uNF4m6FbEs_qrqJk4MnVUUrLRD2nxuOYXvRRepsJ2KnxlMJob4QfQeTaraO1IL0AWv-2IdgDJr0aZLlxyfZR6sT1uRHLZO6DyqFxaM4ay7yGLq1RP3X2aUya_Dt8GUloqASQtOWi_IlRBVcNrnw74AmCdLALrpD51XjU_NoK9ovmVl7p-OX4VWqNx_lm6D94HbwigN2-ia6ymouMw7Hix2S0
-
-
-![capt proxy](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/08a7e743-9490-474c-af67-615c5296c693)
+<img width="856" alt="captPR" src="https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/4829e3aa-862c-4d74-a753-253e04d037dd">
