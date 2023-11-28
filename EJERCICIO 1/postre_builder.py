@@ -131,20 +131,20 @@ class Cliente:
     def elegir_postre(self, builder):
         print("Tipos de postres disponibles:")
         tipos_postres = [
-            "Mochi Ice Cream",
-            "Baklava",
-            "Dulce de Tres Leches con Coco",
-            "Sorvete de Açaí",
-            "Anmitsu",
-            "Kulfi",
-            "Knafeh",
-            "Tiramisú",
-            "Panna Cotta",
-            "Pastel de Chocolate",
-            "Cheesecake",
-            "Mousse de Frambuesa",
-            "Tarta de Limón",
-            "Profiteroles"
+            "Mochi Ice Cream - 5.99$",
+            "Baklava - 7.99$",
+            "Dulce de Tres Leches con Coco - 6.99$",
+            "Sorvete de Açaí - 8.99$",
+            "Anmitsu - 7.49$",
+            "Kulfi - 6.79$",
+            "Knafeh - 9.99$",
+            "Tiramisú - 8.49$",
+            "Panna Cotta - 7.29$",
+            "Pastel de Chocolate - 10.99$",
+            "Cheesecake - 9.79$",
+            "Mousse de Frambuesa - 8.99$",
+            "Tarta de Limón - 7.89$",
+            "Profiteroles - 6.49$"
         ]
         print("Elija el tipo de postre escribiendo su nombre:")
         for tipo in tipos_postres:
