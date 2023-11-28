@@ -1,3 +1,11 @@
+# Evaluación Continua: Patrones Estructurales
+link del repositorio: https://github.com/carlospuigserver/Desarrollo-OO-2-.git
+
+
+
+
+
+
 # EJERCICIO 1
 
 ## Contexto: 
