@@ -5,8 +5,9 @@ import random
 
 # Clase Usuario
 class Usuario:
-    def __init__(self, nombre):
+    def __init__(self, nombre, contrasena):
         self.nombre = nombre
+        self.contrasena = contrasena
 
 # Clase ListaBlanca (LogIn) con SQLite
 class ListaBlancaSQLite:
@@ -21,6 +22,7 @@ class ListaBlancaSQLite:
             CREATE TABLE IF NOT EXISTS usuarios (
                 id INTEGER PRIMARY KEY,
                 nombre TEXT UNIQUE,
+                contrasena TEXT,
                 estado TEXT
             )
         ''')
@@ -30,23 +32,26 @@ class ListaBlancaSQLite:
     def agregar_usuarios_aleatorios(self, cantidad):
         for _ in range(cantidad):
             nombre = f"Usuario{random.randint(1, 100)}"
+            contrasena = f"Contraseña{random.randint(1, 100)}"
             estado = random.choice(["Aprobado", "Denegado"])
-            self._agregar_usuario(nombre, estado)
+            self._agregar_usuario(nombre, contrasena, estado)
 
-    def _agregar_usuario(self, nombre, estado):
+    def _agregar_usuario(self, nombre, contrasena, estado):
         connection = sqlite3.connect(self.db_path)
         cursor = connection.cursor()
-        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, estado) VALUES (?, ?)', (nombre, estado))
+        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, contrasena, estado) VALUES (?, ?, ?)', (nombre, contrasena, estado))
         connection.commit()
         connection.close()
 
     def esta_en_lista_blanca(self, usuario):
         connection = sqlite3.connect(self.db_path)
         cursor = connection.cursor()
-        cursor.execute('SELECT estado FROM usuarios WHERE nombre = ?', (usuario.nombre,))
+        cursor.execute('SELECT contrasena, estado FROM usuarios WHERE nombre = ?', (usuario.nombre,))
         result = cursor.fetchone()
         connection.close()
-        return result == ("Aprobado",)
+        return result and result[1] == "Aprobado" and result[0] == usuario.contrasena
+
+# Resto del código...
 
 # Clase Subject (ABC)
 class Subject(ABC):
@@ -132,12 +137,20 @@ class Proxy(Subject):
         else:
             print(f"Acceso denegado a {usuario.nombre}. No está en la lista blanca.")
 
-
 if __name__ == "__main__":
     lista_blanca_sqlite = ListaBlancaSQLite()
 
     # Agregar usuarios aleatorios a la lista blanca o denegados
     lista_blanca_sqlite.agregar_usuarios_aleatorios(5)
+
+    # Crear objetos Usuario con contraseñas
+    connection = sqlite3.connect(lista_blanca_sqlite.db_path)
+    cursor = connection.cursor()
+    cursor.execute('SELECT nombre, contrasena, estado FROM usuarios')
+    usuarios_bd = cursor.fetchall()
+    connection.close()
+
+    usuarios = [Usuario(nombre, contrasena) for nombre, contrasena, _ in usuarios_bd]
 
     documento = RealSubjectDocumento("Documento1")
     proxy_documento = Proxy(documento, lista_blanca_sqlite)
@@ -150,16 +163,7 @@ if __name__ == "__main__":
 
     print("Acceso a través del Proxy con SQLite:")
     
-    # Obtener usuarios de la base de datos y verificar acceso
-    connection = sqlite3.connect(lista_blanca_sqlite.db_path)
-    cursor = connection.cursor()
-    cursor.execute('SELECT nombre, estado FROM usuarios')
-    usuarios_bd = cursor.fetchall()
-    connection.close()
-
-    for usuario_nombre, usuario_estado in usuarios_bd:
-        usuario = Usuario(usuario_nombre)
-        
+    for usuario in usuarios:
         print(f"\nDocumento para {usuario.nombre}:")
         proxy_documento.request(usuario)
 
