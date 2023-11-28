@@ -1433,6 +1433,8 @@ En resumen, este código simula un sistema básico de control de acceso utilizan
 ### Link UML: 
 https://www.plantuml.com/plantuml/png/nLHDRnCn4BtdL_YuYAO_O5MXYezR3q34sPgr9ukHCrF6ume4_7Tml0xPPDFsWZZ5cV5xVc_U9BT9GJJluif5ICbyIXaaiFcnCkObyMuGxCr69T1OAev91H8I7Ag_LXFqBYI5rn78mUR3NL3SawpzOEz1Fn-pM2S8YbPXYDYzwCq31ryQC0gE83PN5Sb2H50knyu1QV3WUnD8Zp3s1DJDLL-PkUPQmwJWkNq_PXkHK43iNzH117IHQGoQcuOZIuNG8jaOoc7OJw6R5FLjgdyG0tD4e08H74FIyXOu5vZEhb-PsZYHMIOUI56suD1iyl05dTR01BzcJBhqS4FMh3uYn0dvbbtU8IdNkEn9wAKqAUL-d_5DxRnwpeC5_O0Iji5LdvZuYR7ik0ubq9QxnuI_emWEBwlsc3GGpvraXTF6__Rn1kGU5HunqX9AKm1BwVshEC3xxY2WNroSnlwawVV2txvFFWKXsbIP-hR5fJFx2VNd_ohFtFEfOjRh1OgpIhdMD4oVvkRdzVMYtuitwaPUQhUWP_qwazKjai-x-1i0
 
+
+
 ### Foto UML: 
 
 <img width="856" alt="captPR" src="https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/4829e3aa-862c-4d74-a753-253e04d037dd">
