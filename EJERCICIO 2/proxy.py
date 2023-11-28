@@ -2,13 +2,13 @@ import sqlite3
 from abc import ABC, abstractmethod
 from datetime import datetime
 import random
+import string  # Importar el módulo string para generar letras
 
 # Clase Usuario
 class Usuario:
     def __init__(self, nombre, contrasena):
         self.nombre = nombre
         self.contrasena = contrasena
-    
 
 # Clase ListaBlanca (LogIn) con SQLite
 class ListaBlancaSQLite:
@@ -34,7 +34,7 @@ class ListaBlancaSQLite:
     def agregar_usuarios_aleatorios(self, cantidad):
         for _ in range(cantidad):
             nombre = f"Usuario{random.randint(1, 100)}"
-            contrasena = f"Contraseña{random.randint(1, 100)}"
+            contrasena = self._generar_contrasena_aleatoria()
             estado = random.choice(["Aprobado", "Denegado"])
             self._agregar_usuario(nombre, contrasena, estado)
 
@@ -45,6 +45,10 @@ class ListaBlancaSQLite:
                        (nombre, contrasena, estado, ''))
         connection.commit()
         connection.close()
+
+    def _generar_contrasena_aleatoria(self, longitud=10):
+        caracteres = string.ascii_letters + string.digits  # Letras y números
+        return ''.join(random.choice(caracteres) for _ in range(longitud))
 
     def esta_en_lista_blanca(self, usuario):
         connection = sqlite3.connect(self.db_path)
@@ -60,7 +64,6 @@ class ListaBlancaSQLite:
         cursor.execute('UPDATE usuarios SET accion = ? WHERE nombre = ?', (accion, usuario.nombre))
         connection.commit()
         connection.close()
-
 # Clase Subject (ABC)
 class Subject(ABC):
     @abstractmethod
@@ -77,7 +80,7 @@ class RealSubjectDocumento(Subject):
         if self._verificar_acceso(usuario):
             self._registro.append(f"Acceso al documento {self._nombre} registrado en {datetime.now()}")
             self.mostrar_info()
-            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            acciones_posibles = ['accedido', 'modificado', 'eliminado', 'agregado']
             accion_elegida = random.choice(acciones_posibles)
             lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} el documento {self._nombre}.')
 
@@ -103,7 +106,7 @@ class RealSubjectEnlace(Subject):
     def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
             self.mostrar_info()
-            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            acciones_posibles = ['accedido', 'modificado', 'eliminado', 'agregado']
             accion_elegida = random.choice(acciones_posibles)
             lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} el enlace {self._nombre}.')
 
@@ -126,7 +129,7 @@ class RealSubjectCarpeta(Subject):
     def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
             self.mostrar_info()
-            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            acciones_posibles = ['accedido', 'modificado', 'eliminado', 'agregado']
             accion_elegida = random.choice(acciones_posibles)
             lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} la carpeta {self._nombre}.')
 
