@@ -1268,15 +1268,191 @@ elif opcion_menu == "2":
                 
                     
                 
+
+
+# EJERCICIO 2
+
+## Contexto:
+El SAMUR-Protección Civil, tras su proceso de digitalización, se enfrenta al reto de administrar una cantidad masiva de documentos digitales relacionados con sus activaciones y operaciones. Esta documentación no solo consiste en informes y registros, sino que también incluye imágenes, vídeos, audios y otros tipos de archivos multimedia. La necesidad de garantizar un acceso rápido pero seguro a esta información es esencial, especialmente cuando se trata de datos sensibles o confidenciales.
+
+
+## Enunciado del problema:
+
+(1)Documentos: Estos son los archivos básicos en el sistema. Cada documento tiene un nombre, un tipo (texto, imagen, video, etc.) y un tamaño. El contenido de estos documentos puede ser accedido y modificado, pero para algunos documentos sensibles, es necesario llevar un registro de quién y cuándo se accede o modifica.
+
+(2)Enlaces (Links): Son referencias a otros documentos o carpetas en el sistema. No poseen contenido propio, pero ofrecen una forma rápida de acceder a la información referenciada. Su tamaño es simbólico, no correspondiente al tamaño real del archivo o carpeta al que apuntan.
+
+(3)Carpetas: Contenedores que albergan varios documentos, enlaces y otras carpetas. Su tamaño es la suma de los tamaños de todos los elementos contenidos. Se pueden expandir añadiendo más elementos en cualquier momento.
+
+(4)Proxy de Acceso: Para garantizar la seguridad y la trazabilidad en el acceso a los documentos, se implementará un proxy que actuará como intermediario. Este proxy registrará cada acceso o modificación a los documentos, especialmente aquellos que sean sensibles o confidenciales, y solo permitirá el acceso a usuarios autorizados.
+
+
+## Objetivos:
+(1)Utilizar el patrón de diseño Composite para modelar la estructura de documentos del sistema.
+(2)Implementar el patrón Proxy para controlar y registrar el acceso a documentos específicos.
+(3)Desarrollar en Python las clases y la lógica necesaria para representar y gestionar los documentos, enlaces y carpetas, garantizando la seguridad y trazabilidad mediante el uso del proxy.
+(4)Implementar funciones que faciliten la navegación, creación, modificación y eliminación de elementos en el sistema.
+
+
+
                 
-                
-                
-                
-                
-                
-                
+## Cerpeta Composite
+
+Dentro de esta carpeta, está uno de los puntos importantes del ejercicio, que es aplicar el Patrón Composite, ya usado en el Ejercicio 1, para modelar la estructura de documentos del sistema. Para ello, con el objetivo de una mejor comprensión, he dejado 3 archivos dentro de la carpeta, documentos.py, enlace.py y carpeta.py, simplem,ente para entender mejor que hacen cada uno individualmente, y luego está el archivo composite.py, donde ya sabiendo que hace cada clase , es mucho más fácil de entender, a continuación, se adjuntarán los códigos y una explicación un poco más amplia de cada uno de ellos.
+
+
+### documentos.py:
+
+
+  ![codedoc](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/0b36e28b-8d96-4f6e-940e-5e62eed48fa6)
+          
+
+El código define una clase llamada Documento en el archivo documento.py. La clase Documento representa un documento con atributos como nombre, tipo, tamaño, contenido y ruta. La idea principal es encapsular estos atributos y proporcionar métodos para acceder y modificar estos valores de manera controlada.
+
+El constructor __init__ se utiliza para inicializar un objeto Documento con los atributos proporcionados (nombre, tipo, tamaño, contenido y ruta).
+A continuación, se definen propiedades y métodos de configuración (@property y @nombre.setter, @tipo.setter, etc.) para cada atributo del documento. Estos métodos permiten acceder y modificar los atributos de la clase de manera segura, aplicando algunas validaciones simples para asegurarse de que los valores sean del tipo correcto.
+
+La función mostrar_info imprime información formateada sobre el documento, incluyendo nombre, tipo, tamaño, contenido y ruta.
+Finalmente, se presenta un ejemplo de uso de la clase Documento. Se crea un objeto documento_ejemplo con valores específicos y se imprime la información del documento utilizando el método mostrar_info().
+En resumen, este código implementa una clase Documento que encapsula la información relacionada con un documento y proporciona métodos para acceder y modificar sus atributos de manera segura. El ejemplo al final del código muestra cómo crear un objeto Documento y visualizar su información.
                 
                 
 
+### enlace.py:
 
+
+![code-en](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/f0701edf-eb73-4f9d-aebf-35f9034cdf1e)
+
+
+El código en el archivo enlace.py define una clase llamada Enlace que modela un enlace entre documentos. A continuación, se proporciona una explicación detallada:
+
+La clase Enlace tiene tres atributos privados: _nombre, _destino, y _ruta_destino. El atributo _nombre representa el nombre del enlace, _destino representa el documento al que apunta el enlace, y _ruta_destino representa la ruta específica al destino. Estos atributos son inicializados en el método __init__ cuando se crea un objeto de la clase.
+
+Para cada uno de estos atributos, la clase implementa propiedades (@property) que permiten obtener sus valores y métodos setter (@nombre.setter, @destino.setter, @ruta_destino.setter) que validan y asignan nuevos valores. La validación se realiza para garantizar que los valores cumplan con ciertos requisitos; por ejemplo, que el nombre del enlace sea una cadena de texto.
+
+El método mostrar_info de la clase Enlace es responsable de generar una representación en forma de cadena del enlace. Toma un diccionario de documentos como argumento, y si la ruta de destino _ruta_destino coincide con la ruta de un documento en el diccionario, muestra la información detallada del documento. En caso contrario, simplemente muestra información básica sobre el enlace, incluyendo el nombre del enlace y el destino.
+
+El código también incluye un ejemplo de uso al final. Se crea una instancia de la clase Documento para representar un documento de ejemplo, y luego se crea un objeto Enlace que apunta a ese documento. Posteriormente, se solicita al usuario que ingrese la ruta de destino para el enlace y se muestra la información del enlace utilizando el método mostrar_info.
+
+En resumen, enlace.py encapsula la lógica para modelar y trabajar con enlaces entre documentos, proporcionando métodos para obtener y establecer propiedades, así como para mostrar información detallada del enlace en función de la existencia y coincidencia con documentos en un diccionario.
+
+
+
+## carpetas.py
+
+
+
+![codecarp](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/cd6554bb-8459-44f2-a36a-2a5a4c11c8b1)
+
+
+
+
+Clase Carpeta:
+La clase Carpeta representa una carpeta que contiene documentos, incluidos posiblemente enlaces a otros documentos. Tiene atributos como nombre y una lista de documentos (_documentos). La propiedad documentos y su método setter permiten acceder y modificar la lista de documentos. El método agregar_documento añade un documento a la carpeta.
+
+El método tamaño_total calcula el tamaño total de todos los documentos dentro de la carpeta, incluyendo documentos vinculados a través de enlaces.
+
+El método mostrar_info proporciona una representación en forma de cadena de la carpeta, incluyendo su nombre, información detallada de cada documento y el tamaño total de la carpeta, teniendo en cuenta tanto documentos como enlaces.
+
+Ejemplo de Uso:
+Se crean dos objetos de la clase Documento (documento_ejemplo y documento_ejemplo2) y un objeto de la clase Carpeta (carpeta_ejemplo) que contiene estos documentos.
+
+Se utiliza el método mostrar_info de la carpeta para imprimir información detallada sobre la carpeta, incluyendo el nombre, la información de cada documento y el tamaño total de la carpeta, considerando tanto documentos como enlaces.
+
+En resumen, el código de carpetas.py modela documentos y carpetas, teniendo en cuenta el tamaño total de la carpeta, incluyendo documentos y enlaces. Este enfoque permite representar jerarquías complejas de documentos y proporcionar información detallada sobre el contenido y la estructura de una carpeta.
                 
+
+
+
+## Composite.py:
+
+![codecomp](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/bbf9a2b4-6fc9-4467-a532-52ce687732bf)
+
+
+El código  implementa un patrón de diseño estructural "Composite". A continuación, se explica en detalle:
+
+Clase Abstracta Component:
+La clase Component es una clase abstracta que define la interfaz común para todos los elementos en la estructura compuesta. Cada componente tiene un enlace al componente padre (si lo tiene), métodos para agregar y quitar componentes, y un método abstracto operation que debe ser implementado por las subclases concretas.
+
+Clases Concretas Documento, Enlace y Carpeta:
+Documento: Representa un documento simple con atributos como nombre, tipo, tamaño, contenido y ruta. Implementa el método operation para proporcionar una representación en forma de cadena del documento.
+
+Enlace: Representa un enlace que puede apuntar a otro documento. Implementa métodos add y remove, aunque en este caso imprime mensajes indicando que no se pueden agregar ni quitar componentes de un enlace. También implementa el método operation para proporcionar una representación en forma de cadena del enlace.
+
+Carpeta: Representa una carpeta que puede contener documentos o enlaces. Implementa los métodos add, remove y is_composite. El método is_composite devuelve True para indicar que es una carpeta y puede contener más elementos. El método operation devuelve una representación en forma de cadena de la carpeta y sus contenidos.
+
+Función client_code:
+La función client_code toma un componente como parámetro y muestra su información llamando al método mostrar_info.
+
+Lógica Principal:
+En el bloque if __name__ == "__main__":, se crean instancias de Documento, Enlace y Carpeta, y se utiliza un bucle para interactuar con el usuario. El usuario puede elegir ver la información de un documento, un enlace, una carpeta o salir del programa.
+
+En resumen, este código demuestra la implementación del patrón Composite, permitiendo la creación de estructuras jerárquicas de documentos y carpetas, donde una carpeta puede contener documentos o enlaces, y se puede acceder a la información de manera consistente a través de la interfaz común Component.
+
+
+### El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
+uml composite: https://www.plantuml.com/plantuml/png/jL91IWGn4Bpd5Jcko7nWK5bGRuiV497UfCL0qXsI7Y_hFiet-35d9enXmpWtZrLTT5KglSy2IORW5Hop932YZOUSzJs7o8Ga-gIqFYtJixwEa92ahuhL-UtV0ewOG1pJxghN8wlEIXNJ0yBRxBUkgS6o4vo5dNbttYQaNXzSbkTVpxjf2rYxCuMvI3pkV6B2IP8my0TkgxRYFB0P0f9mYKCSZWcBPeJY8bS00Rw_Hkn89coO1CdPgaY3G06Rde_amU2geSKiZYutlZRaLhcG8WgihrvUcjkkN_wzwtgDDvzTDzz9mzMxQ0RrXzf1gR5XbmhK7iaEmVy0
+
+
+<img width="901" alt="CAPTUML" src="https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/c825958e-6015-4867-af81-10df767a6ac5">
+
+
+
+## Proxy: 
+
+
+![codeproxy](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/745a34d4-767d-454e-afbf-2c25d6139086)
+
+
+
+El código implementa un ejemplo de patrón Proxy junto con el uso de SQLite para gestionar una lista blanca de usuarios. A continuación, se explica detalladamente cómo funciona el código:
+
+### Clases y Estructura de Datos:
+
+#### Usuario: 
+Representa un usuario con un nombre.
+
+#### ListaBlancaSQLite: 
+Gestiona la lista blanca de usuarios utilizando una base de datos SQLite. La base de datos contiene una tabla llamada usuarios con columnas id, nombre y estado. Tiene métodos para crear la tabla, agregar usuarios aleatorios y verificar si un usuario está en la lista blanca.
+
+### Clases del Patrón Proxy:
+
+#### Subject (Clase Abstracta): 
+Define la interfaz común para los objetos reales y proxy. En este caso, representa el acceso a documentos, enlaces y carpetas.
+
+#### RealSubjectDocumento, RealSubjectEnlace, RealSubjectCarpeta: 
+Son las implementaciones reales de Subject. Cada uno de ellos tiene un método request que verifica el acceso del usuario antes de mostrar la información.
+
+#### Proxy: 
+Actúa como un intermediario para acceder a los objetos reales (RealSubject). Antes de permitir el acceso, verifica si el usuario está en la lista blanca.
+
+
+### Lógica Principal:
+
+Lógica Principal en if __name__ == "__main__"::
+Se crea una instancia de ListaBlancaSQLite y se le agregan usuarios aleatorios a la lista blanca o denegada.
+
+Se crean instancias de RealSubjectDocumento, RealSubjectEnlace, y RealSubjectCarpeta, y se crean sus respectivos proxies.
+
+Se obtienen los usuarios de la base de datos y se verifica el acceso a través de los proxies para cada usuario.
+
+
+### Ejecución del Proxy con SQLite:
+
+#### Acceso a través del Proxy con SQLite:
+Se muestra información sobre documentos, enlaces y carpetas para cada usuario.
+El proxy verifica si cada usuario está en la lista blanca antes de permitir el acceso. Si no está en la lista blanca, se muestra un mensaje de acceso denegado.
+
+
+### Uso de SQLite:
+#### Uso de SQLite para la Lista Blanca:
+Se utiliza SQLite para almacenar y gestionar la lista blanca de usuarios de manera persistente. La base de datos se crea si no existe y se agregan usuarios aleatorios.
+
+En resumen, el código muestra cómo implementar un Proxy para controlar el acceso a documentos, enlaces y carpetas, y utiliza SQLite para gestionar dinámicamente una lista blanca de usuarios. Esto proporciona una capa adicional de seguridad al verificar el acceso a través del Proxy
+
+
+### El link del diagrama UML junto a una fotografía del mismo son los siguientes: 
+uml proxy: https://www.plantuml.com/plantuml/png/nPFFJiCm3CRlVOeSEy5UeE8myUUs0p1nZjp46q5fCXnd0W7lpj8sGuLsx8AujR7z-VivpY8m4CV65if22E8XH23ZnLiXn9dpJKrOYS1atARuAFgafGaCbnQSWjNTqZ2swNDTootmuo5V2Aa8WL4or1RBMTA43U46ICQkKP1W4TYdprA1OwD1Ly8uJjdoMtOvT7GkC31ed__R1kb8efFMf8-wTLdszLNccrMYzjuc9AW34oWM7Tigra-ek1i0uNF4m6FbEs_qrqJk4MnVUUrLRD2nxuOYXvRRepsJ2KnxlMJob4QfQeTaraO1IL0AWv-2IdgDJr0aZLlxyfZR6sT1uRHLZO6DyqFxaM4ay7yGLq1RP3X2aUya_Dt8GUloqASQtOWi_IlRBVcNrnw74AmCdLALrpD51XjU_NoK9ovmVl7p-OX4VWqNx_lm6D94HbwigN2-ia6ymouMw7Hix2S0
+
+
+![capt proxy](https://github.com/carlospuigserver/Desarrollo-OO-2-/assets/91721643/08a7e743-9490-474c-af67-615c5296c693)
