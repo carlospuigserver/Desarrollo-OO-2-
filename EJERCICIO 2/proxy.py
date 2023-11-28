@@ -8,6 +8,7 @@ class Usuario:
     def __init__(self, nombre, contrasena):
         self.nombre = nombre
         self.contrasena = contrasena
+    
 
 # Clase ListaBlanca (LogIn) con SQLite
 class ListaBlancaSQLite:
@@ -23,7 +24,8 @@ class ListaBlancaSQLite:
                 id INTEGER PRIMARY KEY,
                 nombre TEXT UNIQUE,
                 contrasena TEXT,
-                estado TEXT
+                estado TEXT,
+                accion TEXT
             )
         ''')
         connection.commit()
@@ -39,7 +41,8 @@ class ListaBlancaSQLite:
     def _agregar_usuario(self, nombre, contrasena, estado):
         connection = sqlite3.connect(self.db_path)
         cursor = connection.cursor()
-        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, contrasena, estado) VALUES (?, ?, ?)', (nombre, contrasena, estado))
+        cursor.execute('INSERT OR IGNORE INTO usuarios (nombre, contrasena, estado, accion) VALUES (?, ?, ?, ?)',
+                       (nombre, contrasena, estado, ''))
         connection.commit()
         connection.close()
 
@@ -51,7 +54,12 @@ class ListaBlancaSQLite:
         connection.close()
         return result and result[1] == "Aprobado" and result[0] == usuario.contrasena
 
-# Resto del código...
+    def registrar_accion(self, usuario, accion):
+        connection = sqlite3.connect(self.db_path)
+        cursor = connection.cursor()
+        cursor.execute('UPDATE usuarios SET accion = ? WHERE nombre = ?', (accion, usuario.nombre))
+        connection.commit()
+        connection.close()
 
 # Clase Subject (ABC)
 class Subject(ABC):
@@ -69,6 +77,9 @@ class RealSubjectDocumento(Subject):
         if self._verificar_acceso(usuario):
             self._registro.append(f"Acceso al documento {self._nombre} registrado en {datetime.now()}")
             self.mostrar_info()
+            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            accion_elegida = random.choice(acciones_posibles)
+            lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} el documento {self._nombre}.')
 
     def _verificar_acceso(self, usuario) -> bool:
         print(f"Proxy: Verificando acceso de {usuario.nombre} al documento {self._nombre}.")
@@ -76,7 +87,7 @@ class RealSubjectDocumento(Subject):
 
     def mostrar_info(self):
         print(f"Información del Documento {self._nombre}:")
-        print("Nombre: Documento1")
+        print("Nombre:", self._nombre)
         print("Tipo: Texto")
         print("Tamaño: 1024")
         print("Contenido: Contenido de ejemplo")
@@ -92,6 +103,9 @@ class RealSubjectEnlace(Subject):
     def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
             self.mostrar_info()
+            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            accion_elegida = random.choice(acciones_posibles)
+            lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} el enlace {self._nombre}.')
 
     def _verificar_acceso(self, usuario) -> bool:
         print(f"Proxy: Verificando acceso de {usuario.nombre} al enlace {self._nombre}.")
@@ -99,7 +113,7 @@ class RealSubjectEnlace(Subject):
 
     def mostrar_info(self):
         print(f"Información del Enlace {self._nombre}:")
-        print(f"Nombre: Enlace1")
+        print(f"Nombre: {self._nombre}")
         print(f"Destino: {self._destino}")
         print(f"Ruta Destino: {self._ruta_destino}")
 
@@ -112,6 +126,9 @@ class RealSubjectCarpeta(Subject):
     def request(self, usuario) -> None:
         if self._verificar_acceso(usuario):
             self.mostrar_info()
+            acciones_posibles = ['acceder', 'modificar', 'eliminar', 'agregar']
+            accion_elegida = random.choice(acciones_posibles)
+            lista_blanca_sqlite.registrar_accion(usuario, f'Ha {accion_elegida} la carpeta {self._nombre}.')
 
     def _verificar_acceso(self, usuario) -> bool:
         print(f"Proxy: Verificando acceso de {usuario.nombre} a la carpeta {self._nombre}.")
@@ -150,25 +167,30 @@ if __name__ == "__main__":
     usuarios_bd = cursor.fetchall()
     connection.close()
 
-    usuarios = [Usuario(nombre, contrasena) for nombre, contrasena, _ in usuarios_bd]
+    usuarios = [Usuario(nombre, contrasena) for nombre, contrasena, estado in usuarios_bd if estado == 'Aprobado']
 
-    documento = RealSubjectDocumento("Documento1")
-    proxy_documento = Proxy(documento, lista_blanca_sqlite)
+    # Crear objetos aleatorios (documentos, enlaces y carpetas)
+    objetos = []
+    for _ in range(5):  # Puedes ajustar el número de objetos a crear
+        tipo_objeto = random.choice(['Documento', 'Enlace', 'Carpeta'])
+        nombre_objeto = f"{tipo_objeto}{random.randint(1, 100)}"
+        if tipo_objeto == 'Documento':
+            objetos.append(RealSubjectDocumento(nombre_objeto))
+        elif tipo_objeto == 'Enlace':
+            destino_objeto = f"Documento{random.randint(1, 100)}"
+            ruta_destino_objeto = f"/ruta/ejemplo{random.randint(1, 100)}"
+            objetos.append(RealSubjectEnlace(nombre_objeto, destino_objeto, ruta_destino_objeto))
+        elif tipo_objeto == 'Carpeta':
+            documentos_objeto = [RealSubjectDocumento(f"Documento{random.randint(1, 100)}") for _ in range(3)]  # Puedes ajustar el número de documentos
+            objetos.append(RealSubjectCarpeta(nombre_objeto, documentos_objeto))
 
-    enlace = RealSubjectEnlace("Enlace1", "Documento1", "/ruta/ejemplo")
-    proxy_enlace = Proxy(enlace, lista_blanca_sqlite)
-
-    carpeta = RealSubjectCarpeta("Carpeta1", [documento, enlace])
-    proxy_carpeta = Proxy(carpeta, lista_blanca_sqlite)
+    # Crear proxies para los objetos
+    proxies = [Proxy(objeto, lista_blanca_sqlite) for objeto in objetos]
 
     print("Acceso a través del Proxy con SQLite:")
-    
+
     for usuario in usuarios:
-        print(f"\nDocumento para {usuario.nombre}:")
-        proxy_documento.request(usuario)
-
-        print(f"\nEnlace para {usuario.nombre}:")
-        proxy_enlace.request(usuario)
-
-        print(f"\nCarpeta para {usuario.nombre}:")
-        proxy_carpeta.request(usuario)
+        print(f"\nAcciones para {usuario.nombre}:")
+        for _ in range(3):  # Puedes ajustar el número de acciones
+            proxy = random.choice(proxies)
+            proxy.request(usuario)
